@@ -51,6 +51,7 @@ export interface PortfolioData {
     email: string;
     phone: string;
     summary: string;
+    quote: string;
     links: { label: string; url: string }[];
   };
   projects: ProjectItem[];

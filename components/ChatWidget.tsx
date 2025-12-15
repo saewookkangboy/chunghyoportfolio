@@ -57,7 +57,7 @@ const ChatWidget: React.FC = () => {
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 bg-blue-600 dark:bg-blue-500 text-white px-5 py-3 rounded-full shadow-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
         >
           {isOpen ? <X size={20} /> : <MessageSquare size={20} />}
           <span className="font-medium hidden sm:inline">{isOpen ? labels.chat.closeButton : labels.chat.openButton}</span>
@@ -70,28 +70,28 @@ const ChatWidget: React.FC = () => {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-20 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-96 h-[500px] bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 flex flex-col overflow-hidden"
+            className="fixed bottom-20 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-96 h-[500px] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 z-50 flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="bg-slate-900 p-4 flex items-center gap-3">
-              <div className="p-2 bg-blue-600 rounded-lg">
+            <div className="bg-slate-900 dark:bg-slate-950 p-4 flex items-center gap-3">
+              <div className="p-2 bg-blue-600 dark:bg-blue-500 rounded-lg">
                 <Sparkles size={18} className="text-white" />
               </div>
               <div>
                 <h3 className="font-bold text-white text-sm">{labels.chat.assistantName}</h3>
-                <p className="text-xs text-blue-200">{labels.chat.poweredBy}</p>
+                <p className="text-xs text-blue-200 dark:text-blue-300">{labels.chat.poweredBy}</p>
               </div>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 dark:bg-slate-800/50">
               {messages.map((msg, idx) => (
                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div 
                     className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                       msg.role === 'user' 
-                        ? 'bg-blue-600 text-white rounded-br-none' 
-                        : 'bg-white border border-slate-200 text-slate-700 rounded-bl-none shadow-sm'
+                        ? 'bg-blue-600 dark:bg-blue-500 text-white rounded-br-none' 
+                        : 'bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-100 rounded-bl-none shadow-sm'
                     }`}
                   >
                     {msg.text}
@@ -100,8 +100,8 @@ const ChatWidget: React.FC = () => {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-none px-4 py-3 shadow-sm">
-                    <Loader2 size={16} className="animate-spin text-blue-500" />
+                  <div className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-2xl rounded-bl-none px-4 py-3 shadow-sm">
+                    <Loader2 size={16} className="animate-spin text-blue-500 dark:text-blue-400" />
                   </div>
                 </div>
               )}
@@ -109,11 +109,11 @@ const ChatWidget: React.FC = () => {
             </div>
 
             {/* Input */}
-            <div className="p-3 bg-white border-t border-slate-100">
-              <div className="flex items-center gap-2 bg-slate-50 rounded-full px-4 py-2 border border-slate-200 focus-within:border-blue-400 focus-within:ring-1 focus-within:ring-blue-400 transition-all">
+            <div className="p-3 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 rounded-full px-4 py-2 border border-slate-200 dark:border-slate-700 focus-within:border-blue-400 dark:focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-400 transition-all">
                 <input
                   type="text"
-                  className="flex-1 bg-transparent border-none outline-none text-sm py-1"
+                  className="flex-1 bg-transparent border-none outline-none text-sm py-1 text-slate-900 dark:text-white placeholder:text-slate-400"
                   placeholder={labels.chat.placeholder}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
@@ -122,7 +122,7 @@ const ChatWidget: React.FC = () => {
                 <button 
                   onClick={handleSend}
                   disabled={isLoading || !input.trim()}
-                  className="p-1.5 bg-blue-600 text-white rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+                  className="p-1.5 bg-blue-600 dark:bg-blue-500 text-white rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
                 >
                   <Send size={14} />
                 </button>

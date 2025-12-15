@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+import { useTheme } from '../contexts/ThemeContext';
 
 const InteractiveBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -51,7 +53,8 @@ const InteractiveBackground: React.FC = () => {
 
       draw() {
         if (!ctx) return;
-        ctx.fillStyle = 'rgba(148, 163, 184, 0.4)'; 
+        // Light mode: Slate-400 (approx), Dark mode: White with low opacity
+        ctx.fillStyle = theme === 'dark' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(148, 163, 184, 0.4)';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -83,7 +86,8 @@ const InteractiveBackground: React.FC = () => {
 
           if (distance < 150) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(148, 163, 184, ${0.15 - distance / 1000})`;
+            const baseColor = theme === 'dark' ? '255, 255, 255' : '148, 163, 184';
+            ctx.strokeStyle = `rgba(${baseColor}, ${0.15 - distance / 1000})`;
             ctx.lineWidth = 1;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -97,7 +101,9 @@ const InteractiveBackground: React.FC = () => {
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < 250) {
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(37, 99, 235, ${0.15 - distance / 2000})`; // Blue connection
+          // Blue connection for both themes, slightly brighter in dark mode
+          const blueColor = theme === 'dark' ? '59, 130, 246' : '37, 99, 235'; 
+          ctx.strokeStyle = `rgba(${theme === 'dark' ? '96, 165, 250' : '37, 99, 235'}, ${0.15 - distance / 2000})`; 
           ctx.lineWidth = 1;
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(mouse.x, mouse.y);
@@ -117,12 +123,12 @@ const InteractiveBackground: React.FC = () => {
       window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [theme]); // Re-run effect when theme changes
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none"
+      className="fixed inset-0 z-0 pointer-events-none transition-opacity duration-1000"
       style={{ opacity: 0.8 }}
     />
   );

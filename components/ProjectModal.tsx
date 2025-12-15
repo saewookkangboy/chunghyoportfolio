@@ -23,7 +23,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+          className="absolute inset-0 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm"
         />
 
         {/* Modal Content */}
@@ -31,35 +31,35 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
           initial={{ opacity: 0, y: 50, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
-          className="relative w-full max-w-3xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+          className="relative w-full max-w-3xl max-h-[90vh] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
         >
           {/* Header */}
-          <div className="flex justify-between items-start p-6 sm:p-8 border-b border-slate-100 bg-slate-50/50">
+          <div className="flex justify-between items-start p-6 sm:p-8 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
             <div>
               <div className="flex items-center gap-3 mb-3">
                 <span className={`px-2 py-1 text-[10px] font-mono uppercase tracking-wider border rounded ${
                   project.category === 'Consulting' 
-                    ? 'border-blue-200 text-blue-600 bg-blue-50' 
-                    : 'border-emerald-200 text-emerald-600 bg-emerald-50'
+                    ? 'border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30' 
+                    : 'border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/30'
                 }`}>
                   {project.category}
                 </span>
-                <span className="flex items-center text-xs text-slate-500 font-mono">
+                <span className="flex items-center text-xs text-slate-500 dark:text-slate-400 font-mono">
                   <Calendar size={12} className="mr-1" />
                   {project.period}
                 </span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight">
+              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white leading-tight">
                 {project.client}
               </h2>
-              <div className="flex items-center gap-2 mt-2 text-slate-600 font-medium">
+              <div className="flex items-center gap-2 mt-2 text-slate-600 dark:text-slate-300 font-medium">
                 <User size={16} />
                 <span>{project.role}</span>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-slate-200 transition-colors text-slate-500"
+              className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-500 dark:text-slate-400"
             >
               <X size={24} />
             </button>
@@ -70,8 +70,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
             
             {/* Description */}
             <div>
-              <h3 className="text-sm font-bold uppercase text-slate-400 tracking-widest mb-3">{labels.experience.modalOverview}</h3>
-              <p className="text-lg text-slate-800 leading-relaxed">
+              <h3 className="text-sm font-bold uppercase text-slate-400 dark:text-slate-500 tracking-widest mb-3">{labels.experience.modalOverview}</h3>
+              <p className="text-lg text-slate-800 dark:text-slate-200 leading-relaxed">
                 {project.description}
               </p>
             </div>
@@ -79,14 +79,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
             {/* Results (New Section) */}
             {project.results && project.results.length > 0 && (
               <div>
-                <h3 className="text-sm font-bold uppercase text-blue-600 tracking-widest mb-4 flex items-center gap-2">
+                <h3 className="text-sm font-bold uppercase text-blue-600 dark:text-blue-400 tracking-widest mb-4 flex items-center gap-2">
                   <TrendingUp size={16} />
                   {labels.experience.modalResults}
                 </h3>
                 <ul className="grid gap-3">
                   {project.results.map((result, idx) => (
-                    <li key={idx} className="flex gap-3 text-slate-800 font-medium leading-relaxed bg-blue-50/80 p-4 rounded-lg border border-blue-100/50 shadow-sm">
-                       <div className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                    <li key={idx} className="flex gap-3 text-slate-800 dark:text-slate-200 font-medium leading-relaxed bg-blue-50/80 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100/50 dark:border-blue-900/50 shadow-sm">
+                       <div className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-blue-400 shrink-0" />
                        <span>{result}</span>
                     </li>
                   ))}
@@ -96,11 +96,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
 
             {/* Tasks / Details */}
             <div>
-              <h3 className="text-sm font-bold uppercase text-slate-400 tracking-widest mb-4">{labels.experience.modalResponsibilities}</h3>
+              <h3 className="text-sm font-bold uppercase text-slate-400 dark:text-slate-500 tracking-widest mb-4">{labels.experience.modalResponsibilities}</h3>
               <ul className="grid gap-3">
                 {project.tasks.map((task, idx) => (
-                  <li key={idx} className="flex gap-3 text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border border-slate-100">
-                    <ArrowRight size={18} className="text-slate-400 shrink-0 mt-0.5" />
+                  <li key={idx} className="flex gap-3 text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg border border-slate-100 dark:border-slate-800">
+                    <ArrowRight size={18} className="text-slate-400 dark:text-slate-500 shrink-0 mt-0.5" />
                     <span>{task}</span>
                   </li>
                 ))}
@@ -109,11 +109,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
 
             {/* Tags */}
             <div>
-              <h3 className="text-sm font-bold uppercase text-slate-400 tracking-widest mb-3">{labels.experience.modalTech}</h3>
+              <h3 className="text-sm font-bold uppercase text-slate-400 dark:text-slate-500 tracking-widest mb-3">{labels.experience.modalTech}</h3>
               <div className="flex flex-wrap gap-2">
                 {project.tags.map(tag => (
-                  <div key={tag} className="flex items-center px-3 py-1.5 bg-white border border-slate-200 rounded-full text-sm text-slate-600">
-                    <Tag size={12} className="mr-2 text-slate-400" />
+                  <div key={tag} className="flex items-center px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-sm text-slate-600 dark:text-slate-300">
+                    <Tag size={12} className="mr-2 text-slate-400 dark:text-slate-500" />
                     {tag}
                   </div>
                 ))}
@@ -123,10 +123,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
           </div>
 
           {/* Footer */}
-          <div className="p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
+          <div className="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex justify-end">
             <button 
               onClick={onClose}
-              className="px-6 py-2.5 bg-slate-900 text-white font-medium rounded-lg hover:bg-slate-800 transition-colors"
+              className="px-6 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-medium rounded-lg hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors"
             >
               {labels.experience.modalClose}
             </button>

@@ -23,44 +23,44 @@ const ProjectRow: React.FC<{ project: ProjectItem; index: number; onClick: () =>
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       onClick={onClick}
-      className="group relative border-t border-slate-200 py-8 transition-all duration-300 hover:bg-slate-50/80 cursor-pointer"
+      className="group relative border-t border-slate-200 dark:border-slate-800 py-8 transition-all duration-300 hover:bg-slate-50/80 dark:hover:bg-slate-900/50 cursor-pointer"
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-y-4 md:gap-8 px-4 sm:px-0 items-start">
         
         {/* 1. Period (Compact) */}
         <div className="md:col-span-2 flex flex-row md:flex-col justify-between md:justify-start gap-1">
-          <div className="font-mono text-sm font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
+          <div className="font-mono text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
             {project.period.split(' ')[0]}
           </div>
-          <div className="md:hidden text-xs text-slate-400 self-center">
+          <div className="md:hidden text-xs text-slate-400 dark:text-slate-500 self-center">
             {project.category}
           </div>
         </div>
 
         {/* 2. Client & Role */}
         <div className="md:col-span-4 pr-4">
-          <h3 className="text-xl md:text-2xl font-bold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors flex items-center gap-2">
+          <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-50 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-2">
             {project.client}
             <ArrowUpRight size={18} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-blue-500" />
           </h3>
-          <div className="mt-1.5 text-sm font-medium text-slate-500 uppercase tracking-wide">
+          <div className="mt-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
             {project.role}
           </div>
         </div>
 
         {/* 3. Description (Preview) */}
         <div className="md:col-span-6">
-          <p className="text-base text-slate-600 leading-relaxed line-clamp-2 mb-3">
+          <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2 mb-3">
             {project.description}
           </p>
           <div className="flex flex-wrap gap-2">
             {project.tags.slice(0, 3).map(tag => (
-              <span key={tag} className="text-[10px] font-mono text-slate-400 bg-white border border-slate-100 px-1.5 py-0.5 rounded">
+              <span key={tag} className="text-[10px] font-mono text-slate-400 dark:text-slate-500 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 px-1.5 py-0.5 rounded">
                 #{tag}
               </span>
             ))}
             {project.tags.length > 3 && (
-              <span className="text-[10px] font-mono text-slate-400 px-1.5 py-0.5">+more</span>
+              <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500 px-1.5 py-0.5">+more</span>
             )}
           </div>
         </div>
@@ -91,17 +91,17 @@ const Experience: React.FC = () => {
   }, [data.projects]);
 
   return (
-    <section id="experience" className="py-24 px-4 sm:px-6 lg:px-12 bg-white relative z-10">
+    <section id="experience" className="py-24 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950 relative z-10 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header */}
-        <div className="grid md:grid-cols-12 gap-8 mb-16 border-b border-slate-900 pb-8 items-end">
+        <div className="grid md:grid-cols-12 gap-8 mb-16 border-b border-slate-900 dark:border-slate-700 pb-8 items-end">
           <div className="md:col-span-6">
-            <h2 className="text-5xl md:text-6xl font-bold text-slate-900 tracking-tight mb-2">{labels.experience.title}</h2>
-            <span className="font-mono text-sm uppercase tracking-widest text-blue-600">{labels.experience.subtitle}</span>
+            <h2 className="text-5xl md:text-6xl font-bold text-slate-900 dark:text-white tracking-tight mb-2">{labels.experience.title}</h2>
+            <span className="font-mono text-sm uppercase tracking-widest text-blue-600 dark:text-blue-400">{labels.experience.subtitle}</span>
           </div>
           <div className="md:col-span-6 text-right md:text-left">
-             <p className="text-slate-600 text-lg leading-relaxed md:max-w-md md:ml-auto">
+             <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed md:max-w-md md:ml-auto">
                {labels.experience.description}
              </p>
           </div>
@@ -112,10 +112,10 @@ const Experience: React.FC = () => {
           {groupedProjects.map(([year, projects]) => (
             <div key={year} className="mb-12">
               <div className="flex items-center gap-4 mb-6">
-                <span className="text-4xl font-bold text-slate-200 font-mono">{year}</span>
-                <div className="h-px bg-slate-100 flex-1"></div>
+                <span className="text-4xl font-bold text-slate-200 dark:text-slate-800 font-mono">{year}</span>
+                <div className="h-px bg-slate-100 dark:bg-slate-800 flex-1"></div>
               </div>
-              <div className="border-b border-slate-200">
+              <div className="border-b border-slate-200 dark:border-slate-800">
                 {projects.map((project, index) => (
                   <ProjectRow 
                     key={project.id} 
@@ -130,16 +130,16 @@ const Experience: React.FC = () => {
         </div>
 
         {/* Collapsible Career History */}
-        <div className="border-t border-slate-900 pt-10">
+        <div className="border-t border-slate-900 dark:border-slate-700 pt-10">
            <div 
              className="flex justify-between items-center cursor-pointer group select-none"
              onClick={() => setIsHistoryOpen(!isHistoryOpen)}
            >
              <div className="flex flex-col">
-                <h2 className="text-3xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{labels.experience.historyTitle}</h2>
-                <span className="font-mono text-xs uppercase tracking-widest text-slate-400 mt-1">{labels.experience.historySubtitle}</span>
+                <h2 className="text-3xl font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{labels.experience.historyTitle}</h2>
+                <span className="font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-slate-500 mt-1">{labels.experience.historySubtitle}</span>
              </div>
-             <div className={`p-2 rounded-full border transition-all ${isHistoryOpen ? 'bg-slate-900 text-white border-slate-900' : 'border-slate-300 text-slate-400 group-hover:border-blue-600 group-hover:text-blue-600'}`}>
+             <div className={`p-2 rounded-full border transition-all ${isHistoryOpen ? 'bg-slate-900 dark:bg-slate-700 text-white border-slate-900 dark:border-slate-700' : 'border-slate-300 dark:border-slate-600 text-slate-400 group-hover:border-blue-600 dark:group-hover:border-blue-400 group-hover:text-blue-600 dark:group-hover:text-blue-400'}`}>
                 {isHistoryOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
              </div>
            </div>
@@ -155,27 +155,27 @@ const Experience: React.FC = () => {
                >
                  <div className="grid lg:grid-cols-12 gap-12 pt-12">
                     <div className="lg:col-span-3 hidden lg:block">
-                       <span className="font-mono text-xs text-slate-400">{labels.experience.chronological}</span>
+                       <span className="font-mono text-xs text-slate-400 dark:text-slate-500">{labels.experience.chronological}</span>
                     </div>
                     
                     <div className="lg:col-span-9">
                        <div className="grid md:grid-cols-2 gap-x-12 gap-y-16">
                          {data.careerHistory.map((job) => (
                            <div key={job.id} className="group">
-                             <div className="flex justify-between items-baseline border-b border-slate-200 pb-3 mb-4 group-hover:border-blue-600 transition-colors">
-                                <h3 className="text-xl font-bold text-slate-900">{job.company}</h3>
-                                <span className="font-mono text-xs text-slate-500">{job.period}</span>
+                             <div className="flex justify-between items-baseline border-b border-slate-200 dark:border-slate-800 pb-3 mb-4 group-hover:border-blue-600 dark:group-hover:border-blue-400 transition-colors">
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">{job.company}</h3>
+                                <span className="font-mono text-xs text-slate-500 dark:text-slate-400">{job.period}</span>
                              </div>
                              
                              <div className="flex items-center gap-2 mb-4">
-                               <span className="text-sm font-bold text-blue-600 uppercase tracking-wide">{job.role}</span>
-                               <span className="text-slate-300">|</span>
-                               <span className="text-sm text-slate-500">{job.type}</span>
+                               <span className="text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide">{job.role}</span>
+                               <span className="text-slate-300 dark:text-slate-600">|</span>
+                               <span className="text-sm text-slate-500 dark:text-slate-400">{job.type}</span>
                              </div>
 
                              <ul className="space-y-2">
                                {job.details.map((detail, idx) => (
-                                 <li key={idx} className="text-slate-600 text-sm leading-relaxed pl-3 relative before:content-['•'] before:absolute before:left-0 before:text-slate-300">
+                                 <li key={idx} className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed pl-3 relative before:content-['•'] before:absolute before:left-0 before:text-slate-300 dark:before:text-slate-600">
                                    {detail}
                                  </li>
                                ))}

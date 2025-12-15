@@ -25,13 +25,14 @@ AI기반 마케팅 빌더(Team & Empowerment)
 AI 기술과 책임있는 AI의 실력을 기반으로
 데이터와 크리에이티브의 결합 중심의
 지속적인 Expert로 성장하고 있습니다.`,
+    quote: "현장에서 답을 찾고,\n지속적인 Learn-by-Doing",
     links: [
       { label: "Website", url: "https://troe.kr" },
       { label: "LinkedIn", url: "https://www.linkedin.com/in/chunghyopark/" },
       { label: "GitHub", url: "https://github.com/saewookkangboy" },
       { label: "Brunch", url: "https://brunch.co.kr/@saewookkangboy" },
       { label: "AI Project: Prompt", url: "https://prompt.allrounder.im/" },
-      { label: "AI Project: Gaeo", url: "https://gaeo.allrounder.im/" }
+      { label: "AI Project: GAEO Analysis", url: "https://gaeo.allrounder.im/" }
     ]
   },
   projects: [
@@ -284,6 +285,51 @@ AI 기술과 책임있는 AI의 실력을 기반으로
     },
     {
       id: "l2",
+      title: "K-Digital Training 마케팅 멘토링",
+      organizer: "구름 (Goorm)",
+      period: "2022",
+      role: "Mentor",
+      description: "개발자 및 PM/PO 양성 과정 내 IT 비즈니스 마케팅 이해 및 프로젝트 멘토링",
+      details: [
+        "IT 서비스 기획과 시장 진입 전략(Go-to-Market) 멘토링",
+        "서비스 런칭 시나리오 및 초기 유저 확보 전략 수립 지원",
+        "랜딩 페이지 최적화(LPO) 및 전환율 개선 피드백",
+        "예비 창업팀을 위한 비즈니스 모델(BM) 점검"
+      ],
+      tags: ["Mentoring", "Startup", "Go-to-Market", "Business Model"]
+    },
+    {
+      id: "l3",
+      title: "디지털 마케팅 올인원 패키지 (그로스)",
+      organizer: "패스트캠퍼스 (Fast Campus)",
+      period: "2021 - 2023",
+      role: "Main Instructor",
+      description: "온라인/오프라인 통합 그로스 마케팅 강의. 데이터 분석부터 전략 수립, 매체 운영까지 마케팅 전 과정 교육.",
+      details: [
+        "그로스 해킹의 이해와 AARRR 프레임워크 실습",
+        "주요 광고 매체(Meta, Google) 기술적 세팅 및 최적화",
+        "데이터 기반의 의사결정 프로세스 및 성과 분석 리포팅",
+        "스타트업 마케터를 위한 실전 성장 전략 케이스 스터디"
+      ],
+      tags: ["Growth Marketing", "Data Analysis", "AARRR", "Media Strategy"]
+    },
+    {
+      id: "l4",
+      title: "퍼포먼스 마케팅 실무 심화 과정",
+      organizer: "러닝스푼즈 (Learning Spoons)",
+      period: "2019 - 2021",
+      role: "Lecturer",
+      description: "현업 마케터 및 주니어 대상의 퍼포먼스 마케팅 심화 실습 강의",
+      details: [
+        "퍼포먼스 마케팅의 본질과 미디어 믹스 모델링(MMM) 이해",
+        "고객 생애 가치(LTV) 및 고객 획득 비용(CAC) 분석 방법론",
+        "ROAS 최적화를 위한 캠페인 구조 설계 및 소재 테스트 전략",
+        "실무 엑셀을 활용한 데이터 피벗 및 대시보드 구성 실습"
+      ],
+      tags: ["Performance Marketing", "Media Mix", "LTV/CAC", "Excel Data"]
+    },
+    {
+      id: "l5",
       title: "프로그래머틱 광고 및 DMP 운영 교육",
       organizer: "삼성전자 (Samsung Electronics)",
       period: "2017 - 2019",
@@ -296,36 +342,6 @@ AI 기술과 책임있는 AI의 실력을 기반으로
         "모바일 디바이스 데이터 활용 및 프라이버시 이슈 대응"
       ],
       tags: ["Ad Tech", "DMP", "Programmatic Ads", "Mobile Data"]
-    },
-    {
-      id: "l3",
-      title: "Google Analytics 4 기초 실무",
-      organizer: "Corporate / Public",
-      period: "2023.10",
-      role: "Instructor",
-      description: "GA4 기본 설정 및 데이터 분석 기초 실무 강의",
-      details: [
-        "UA(Universal Analytics)와 GA4의 주요 차이점 및 데이터 모델 이해",
-        "이벤트(Event) 기반 수집 구조 및 매개변수 설정 실습",
-        "탐색(Explore) 보고서를 활용한 고객 여정 및 유입 경로 분석",
-        "맞춤 보고서(Custom Report) 생성 및 데이터 시각화 기초"
-      ],
-      tags: ["GA4", "Data Analysis", "Tracking Setup", "Visualization"]
-    },
-    {
-      id: "l4",
-      title: "디지털 마케팅 전략 및 트렌드 특강",
-      organizer: "각종 기업 및 대학",
-      period: "2018 - Present",
-      role: "Speaker",
-      description: "디지털 마케팅 최신 트렌드, 데이터 기반 의사결정, 브랜드 커뮤니케이션 전략 특강 다수 진행",
-      details: [
-        "AI 시대의 디지털 마케팅 트렌드 변화 및 대응 전략",
-        "데이터 드리븐(Data-Driven) 의사결정 프로세스 및 성공 사례",
-        "소비자 행동 심리학과 브랜드 스토리텔링 전략",
-        "퍼포먼스 마케팅과 브랜딩의 균형 성장(Growth) 전략"
-      ],
-      tags: ["Marketing Trends", "Data Driven", "Brand Storytelling", "Growth Strategy"]
     }
   ]
 };
@@ -344,6 +360,7 @@ Possessing a diverse spectrum of experience spanning web services, research, con
 Based on the motto of "finding answers in the field and continuous Learn-by-Doing," I operate as an integrated marketing strategy expert covering Growth, Performance, Branding, Content, and Communication, grounded in Data-Driven decision making.
 
 I am continuously growing as an Expert focused on the convergence of data and creativity, built upon AI technology and Responsible AI capabilities.`,
+    quote: "Finding answers in the field,\nand continuous Learn-by-Doing",
   },
   projects: [
     {
@@ -574,6 +591,51 @@ I am continuously growing as an Expert focused on the convergence of data and cr
     },
     {
       id: "l2",
+      title: "K-Digital Training Marketing Mentoring",
+      organizer: "Goorm",
+      period: "2022",
+      role: "Mentor",
+      description: "IT business marketing understanding and project mentoring for developer and PM/PO training courses.",
+      details: [
+        "Mentoring on IT service planning and Go-to-Market strategies.",
+        "Support for service launch scenarios and initial user acquisition strategies.",
+        "Feedback on Landing Page Optimization (LPO) and conversion rate improvement.",
+        "Business Model (BM) validation for prospective startup teams."
+      ],
+      tags: ["Mentoring", "Startup", "Go-to-Market", "Business Model"]
+    },
+    {
+      id: "l3",
+      title: "Digital Marketing All-in-One Package (Growth)",
+      organizer: "Fast Campus",
+      period: "2021 - 2023",
+      role: "Main Instructor",
+      description: "Integrated online/offline Growth Marketing course. Teaching the entire marketing process from data analysis to strategy and media operation.",
+      details: [
+        "Understanding Growth Hacking and AARRR framework practice.",
+        "Technical setup and optimization of major advertising channels (Meta, Google).",
+        "Data-driven decision-making processes and performance reporting.",
+        "Practical growth strategy case studies for startup marketers."
+      ],
+      tags: ["Growth Marketing", "Data Analysis", "AARRR", "Media Strategy"]
+    },
+    {
+      id: "l4",
+      title: "Performance Marketing Intensive Course",
+      organizer: "Learning Spoons",
+      period: "2019 - 2021",
+      role: "Lecturer",
+      description: "Intensive performance marketing workshop for practitioners and juniors.",
+      details: [
+        "Essence of Performance Marketing and understanding Media Mix Modeling (MMM).",
+        "Methodologies for analyzing Customer Lifetime Value (LTV) and Customer Acquisition Cost (CAC).",
+        "Campaign structure design for ROAS optimization and creative testing strategies.",
+        "Practical Excel exercises for data pivoting and dashboard construction."
+      ],
+      tags: ["Performance Marketing", "Media Mix", "LTV/CAC", "Excel Data"]
+    },
+    {
+      id: "l5",
       title: "Programmatic Ads & DMP Operation",
       organizer: "Samsung Electronics",
       period: "2017 - 2019",
@@ -586,36 +648,6 @@ I am continuously growing as an Expert focused on the convergence of data and cr
         "Utilization of mobile device data and response to privacy issues."
       ],
       tags: ["Ad Tech", "DMP", "Programmatic Ads", "Mobile Data"]
-    },
-    {
-      id: "l3",
-      title: "Google Analytics 4 Fundamentals",
-      organizer: "Corporate / Public",
-      period: "2023.10",
-      role: "Instructor",
-      description: "Basic setup of GA4 and fundamental data analysis practice.",
-      details: [
-        "Understanding major differences between UA (Universal Analytics) and GA4 and data models.",
-        "Practice on Event-based collection structures and parameter settings.",
-        "Analysis of customer journeys and acquisition paths using Explore reports.",
-        "Creation of Custom Reports and basics of data visualization."
-      ],
-      tags: ["GA4", "Data Analysis", "Tracking Setup", "Visualization"]
-    },
-    {
-      id: "l4",
-      title: "Digital Marketing Strategy & Trends",
-      organizer: "Various Corps & Universities",
-      period: "2018 - Present",
-      role: "Speaker",
-      description: "Numerous special lectures on the latest digital marketing trends, data-driven decision making, and brand communication strategies.",
-      details: [
-        "Digital marketing trend changes and response strategies in the AI era.",
-        "Data-Driven decision-making processes and success stories.",
-        "Consumer behavioral psychology and brand storytelling strategies.",
-        "Balanced growth strategies between Performance Marketing and Branding."
-      ],
-      tags: ["Marketing Trends", "Data Driven", "Brand Storytelling", "Growth Strategy"]
     }
   ]
 };
@@ -634,6 +666,7 @@ Webサービス、リサーチ、コンテンツ、エージェンシー、コ�
 「現場で答えを見つけ、持続的なLearn-by-Doing（実践を通じて学ぶ）」を基盤に、グロース、パフォーマンス、ブランド、コンテンツ、コミュニケーションに至るまで、データに基づく意思決定を中心とした統合的なマーケティング戦略専門家として活動しています。
 
 AI技術と責任あるAIの実力を基に、データとクリエイティブの融合を中心とした持続的なExpertとして成長し続けています。`,
+    quote: "現場で答えを見つけ、\n持続的なLearn-by-Doing",
   },
   projects: [
     {
@@ -864,6 +897,51 @@ AI技術と責任あるAIの実力を基に、データとクリエイティブ�
     },
     {
       id: "l2",
+      title: "K-Digital Training マーケティングメンタリング",
+      organizer: "Goorm（グルム）",
+      period: "2022",
+      role: "Mentor",
+      description: "開発者およびPM/PO養成課程におけるITビジネスマーケティングの理解およびプロジェクトメンタリング。",
+      details: [
+        "ITサービス企画と市場参入戦略（Go-to-Market）メンタリング。",
+        "サービスローンチシナリオおよび初期ユーザー獲得戦略の策定支援。",
+        "ランディングページ最適化（LPO）およびコンバージョン率改善フィードバック。",
+        "予備創業チームのためのビジネスモデル（BM）点検。"
+      ],
+      tags: ["Mentoring", "Startup", "Go-to-Market", "Business Model"]
+    },
+    {
+      id: "l3",
+      title: "デジタルマーケティングオールインワンパッケージ（グロース）",
+      organizer: "Fast Campus（ファストキャンパス）",
+      period: "2021 - 2023",
+      role: "Main Instructor",
+      description: "オンライン/オフライン統合グロースマーケティング講義。データ分析から戦略策定、媒体運営までマーケティング全過程を教育。",
+      details: [
+        "グロースハッキングの理解とAARRRフレームワーク実習。",
+        "主要広告媒体（Meta, Google）の技術的設定および最適化。",
+        "データに基づく意思決定プロセスおよび成果分析レポーティング。",
+        "スタートアップマーケターのための実戦成長戦略ケーススタディ。"
+      ],
+      tags: ["Growth Marketing", "Data Analysis", "AARRR", "Media Strategy"]
+    },
+    {
+      id: "l4",
+      title: "パフォーマンスマーケティング実務深化課程",
+      organizer: "Learning Spoons（ラーニングスプーン）",
+      period: "2019 - 2021",
+      role: "Lecturer",
+      description: "現職マーケターおよびジュニア対象のパフォーマンスマーケティング深化実習講義。",
+      details: [
+        "パフォーマンスマーケティングの本質とメディアミックスモデリング（MMM）の理解。",
+        "顧客生涯価値（LTV）および顧客獲得コスト（CAC）分析方法論。",
+        "ROAS最適化のためのキャンペーン構造設計および素材テスト戦略。",
+        "実務Excelを活用したデータピボットおよびダッシュボード構成実習。"
+      ],
+      tags: ["Performance Marketing", "Media Mix", "LTV/CAC", "Excel Data"]
+    },
+    {
+      id: "l5",
       title: "プログラマティック広告およびDMP運営教育",
       organizer: "サムスン電子",
       period: "2017 - 2019",
@@ -876,36 +954,6 @@ AI技術と責任あるAIの実力を基に、データとクリエイティブ�
         "モバイルデバイスデータの活用およびプライバシー問題への対応。"
       ],
       tags: ["Ad Tech", "DMP", "Programmatic Ads", "Mobile Data"]
-    },
-    {
-      id: "l3",
-      title: "Google Analytics 4 基礎実務",
-      organizer: "企業 / 公共機関",
-      period: "2023.10",
-      role: "Instructor",
-      description: "GA4の基本設定およびデータ分析基礎実務講義。",
-      details: [
-        "UA(Universal Analytics)とGA4の主な違いおよびデータモデルの理解。",
-        "イベント(Event)基盤の収集構造およびパラメータ設定の実習。",
-        "探索(Explore)レポートを活用した顧客ジャーニーおよび流入経路の分析。",
-        "カスタムレポート(Custom Report)作成およびデータ可視化の基礎。"
-      ],
-      tags: ["GA4", "Data Analysis", "Tracking Setup", "Visualization"]
-    },
-    {
-      id: "l4",
-      title: "デジタルマーケティング戦略およびトレンド特講",
-      organizer: "各種企業および大学",
-      period: "2018 - 現在",
-      role: "Speaker",
-      description: "デジタルマーケティングの最新トレンド、データに基づく意思決定、ブランドコミュニケーション戦略に関する多数の特別講義。",
-      details: [
-        "AI時代のデジタルマーケティングトレンドの変化および対応戦略。",
-        "データドリブン(Data-Driven)な意思決定プロセスおよび成功事例。",
-        "消費者行動心理学とブランドストーリーテリング戦略。",
-        "パフォーマンスマーケティングとブランディングの均衡ある成長(Growth)戦略。"
-      ],
-      tags: ["Marketing Trends", "Data Driven", "Brand Storytelling", "Growth Strategy"]
     }
   ]
 };

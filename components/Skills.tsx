@@ -6,11 +6,11 @@ const Skills: React.FC = () => {
   const { data, labels } = useLanguage();
 
   return (
-    <section id="skills" className="py-24 px-4 sm:px-6 lg:px-12 bg-white relative z-10 border-t border-slate-200">
+    <section id="skills" className="py-24 px-4 sm:px-6 lg:px-12 bg-white dark:bg-slate-950 relative z-10 border-t border-slate-200 dark:border-slate-800 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         
         {/* Header */}
-        <div className="grid md:grid-cols-12 gap-8 mb-16 border-b border-slate-900 pb-8 items-end">
+        <div className="grid md:grid-cols-12 gap-8 mb-16 border-b border-slate-900 dark:border-slate-700 pb-8 items-end">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -18,8 +18,8 @@ const Skills: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="md:col-span-6"
           >
-             <h2 className="text-5xl md:text-6xl font-bold text-slate-900 tracking-tight mb-2">{labels.skills.title}</h2>
-             <span className="font-mono text-sm uppercase tracking-widest text-blue-600">{labels.skills.subtitle}</span>
+             <h2 className="text-5xl md:text-6xl font-bold text-slate-900 dark:text-white tracking-tight mb-2">{labels.skills.title}</h2>
+             <span className="font-mono text-sm uppercase tracking-widest text-blue-600 dark:text-blue-400">{labels.skills.subtitle}</span>
           </motion.div>
         </div>
 
@@ -37,14 +37,14 @@ const Skills: React.FC = () => {
                    viewport={{ once: true, margin: "-50px" }}
                    transition={{ duration: 0.5, delay: catIndex * 0.1 }}
                  >
-                   <h3 className="text-lg font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">
+                   <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4 pb-2 border-b border-slate-200 dark:border-slate-800">
                      {category.name}
                    </h3>
                    <ul className="space-y-3">
                      {category.items.map((item, itemIndex) => (
                        <motion.li 
                          key={item} 
-                         className="text-slate-600 text-sm font-medium hover:text-blue-600 transition-colors cursor-default"
+                         className="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-default"
                          initial={{ opacity: 0, x: -10 }}
                          whileInView={{ opacity: 1, x: 0 }}
                          viewport={{ once: true }}
@@ -69,23 +69,23 @@ const Skills: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-               <h3 className="font-mono text-xs uppercase tracking-widest text-slate-400 mb-6 border-b border-slate-200 pb-2">
+               <h3 className="font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-6 border-b border-slate-200 dark:border-slate-800 pb-2">
                  {labels.skills.education}
                </h3>
                <div className="space-y-8">
                   <div className="group">
                     <div className="flex justify-between items-baseline mb-1">
-                       <h4 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Chung-Ang University</h4>
-                       <span className="text-xs font-mono text-slate-400">Graduate</span>
+                       <h4 className="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Chung-Ang University</h4>
+                       <span className="text-xs font-mono text-slate-400 dark:text-slate-500">Graduate</span>
                     </div>
-                    <p className="text-slate-600">Strategy & Brand Communication</p>
+                    <p className="text-slate-600 dark:text-slate-400">Strategy & Brand Communication</p>
                   </div>
                   <div className="group">
                     <div className="flex justify-between items-baseline mb-1">
-                       <h4 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Soonchunhyang University</h4>
-                       <span className="text-xs font-mono text-slate-400">Bachelor</span>
+                       <h4 className="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Soonchunhyang University</h4>
+                       <span className="text-xs font-mono text-slate-400 dark:text-slate-500">Bachelor</span>
                     </div>
-                    <p className="text-slate-600">Financial Insurance</p>
+                    <p className="text-slate-600 dark:text-slate-400">Financial Insurance</p>
                   </div>
                </div>
             </motion.div>
@@ -97,17 +97,17 @@ const Skills: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-               <h3 className="font-mono text-xs uppercase tracking-widest text-slate-400 mb-6 border-b border-slate-200 pb-2">
+               <h3 className="font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-6 border-b border-slate-200 dark:border-slate-800 pb-2">
                  {labels.skills.certifications}
                </h3>
                <div className="space-y-4">
                   {data.certifications.map((cert, idx) => (
                     <div key={idx} className="flex justify-between items-start group">
                       <div>
-                        <h4 className="font-bold text-slate-900 text-sm group-hover:text-blue-600 transition-colors">{cert.name}</h4>
-                        <span className="text-xs text-slate-500">{cert.issuer || 'Certified'}</span>
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{cert.name}</h4>
+                        <span className="text-xs text-slate-500 dark:text-slate-400">{cert.issuer || 'Certified'}</span>
                       </div>
-                      <span className="font-mono text-xs text-slate-400">{cert.date}</span>
+                      <span className="font-mono text-xs text-slate-400 dark:text-slate-500">{cert.date}</span>
                     </div>
                   ))}
                </div>
