@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { Language } from '../types';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { language, setLanguage, labels } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,7 +26,6 @@ const Header: React.FC = () => {
     const element = document.getElementById(targetId);
     
     if (element) {
-      // Offset for fixed header (approx 100px for breathing room)
       const headerOffset = 100;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.scrollY - headerOffset;
@@ -36,10 +38,10 @@ const Header: React.FC = () => {
   };
 
   const navItems = [
-    { label: 'About', href: '#about' },
-    { label: 'Projects', href: '#experience' },
-    { label: 'Expertise', href: '#skills' },
-    { label: 'Lectures', href: '#lectures' },
+    { label: labels.nav.about, href: '#about' },
+    { label: labels.nav.projects, href: '#experience' },
+    { label: labels.nav.expertise, href: '#skills' },
+    { label: labels.nav.lectures, href: '#lectures' },
   ];
 
   return (
@@ -57,32 +59,36 @@ const Header: React.FC = () => {
           P.CHUNGHYO
         </a>
         
-        <nav className="hidden md:flex gap-8">
-          {navItems.map(item => (
-            <a 
-              key={item.label}
-              href={item.href}
-              onClick={(e) => handleSmoothScroll(e, item.href)}
-              className="text-sm font-medium text-slate-500 hover:text-slate-900 uppercase tracking-widest transition-colors"
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
-        
-        {/* Mobile menu place holder - simple solution for now */}
-        <nav className="md:hidden flex gap-4">
-           {navItems.slice(0,2).map(item => (
-             <a 
-               key={item.label}
-               href={item.href}
-               onClick={(e) => handleSmoothScroll(e, item.href)}
-               className="text-xs font-bold text-slate-600 uppercase"
-             >
-               {item.label}
-             </a>
-           ))}
-        </nav>
+        <div className="flex items-center gap-8">
+          <nav className="hidden md:flex gap-8">
+            {navItems.map(item => (
+              <a 
+                key={item.href}
+                href={item.href}
+                onClick={(e) => handleSmoothScroll(e, item.href)}
+                className="text-sm font-medium text-slate-500 hover:text-slate-900 uppercase tracking-widest transition-colors"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="flex items-center bg-slate-100 rounded-full p-1">
+             {(['ko', 'en', 'ja'] as Language[]).map((lang) => (
+               <button
+                 key={lang}
+                 onClick={() => setLanguage(lang)}
+                 className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${
+                   language === lang 
+                     ? 'bg-white text-blue-600 shadow-sm' 
+                     : 'text-slate-400 hover:text-slate-600'
+                 }`}
+               >
+                 {lang.toUpperCase()}
+               </button>
+             ))}
+          </div>
+        </div>
       </div>
     </header>
   );

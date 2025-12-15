@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, ArrowUpRight } from 'lucide-react';
-import { RESUME_DATA } from '../constants';
+import { useLanguage } from '../contexts/LanguageContext';
 import { ProjectItem } from '../types';
 import ProjectModal from './ProjectModal';
 
@@ -18,10 +18,10 @@ const sortProjects = (projects: ProjectItem[]) => {
 const ProjectRow: React.FC<{ project: ProjectItem; index: number; onClick: () => void }> = ({ project, index, onClick }) => {
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.3, delay: index * 0.05 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
       onClick={onClick}
       className="group relative border-t border-slate-200 py-8 transition-all duration-300 hover:bg-slate-50/80 cursor-pointer"
     >
@@ -71,12 +71,13 @@ const ProjectRow: React.FC<{ project: ProjectItem; index: number; onClick: () =>
 };
 
 const Experience: React.FC = () => {
+  const { data, labels } = useLanguage();
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   // Group projects by Year
   const groupedProjects = useMemo(() => {
-    const sorted = sortProjects(RESUME_DATA.projects);
+    const sorted = sortProjects(data.projects);
     const groups: { [year: string]: ProjectItem[] } = {};
     
     sorted.forEach(project => {
@@ -87,7 +88,7 @@ const Experience: React.FC = () => {
 
     // Sort years descending
     return Object.entries(groups).sort((a, b) => b[0].localeCompare(a[0]));
-  }, []);
+  }, [data.projects]);
 
   return (
     <section id="experience" className="py-24 px-4 sm:px-6 lg:px-12 bg-white relative z-10">
@@ -96,12 +97,12 @@ const Experience: React.FC = () => {
         {/* Section Header */}
         <div className="grid md:grid-cols-12 gap-8 mb-16 border-b border-slate-900 pb-8 items-end">
           <div className="md:col-span-6">
-            <h2 className="text-5xl md:text-6xl font-bold text-slate-900 tracking-tight mb-2">Projects</h2>
-            <span className="font-mono text-sm uppercase tracking-widest text-blue-600">Selected Works 2016 — 2025</span>
+            <h2 className="text-5xl md:text-6xl font-bold text-slate-900 tracking-tight mb-2">{labels.experience.title}</h2>
+            <span className="font-mono text-sm uppercase tracking-widest text-blue-600">{labels.experience.subtitle}</span>
           </div>
           <div className="md:col-span-6 text-right md:text-left">
              <p className="text-slate-600 text-lg leading-relaxed md:max-w-md md:ml-auto">
-               Click on any project to view detailed case studies, specific roles, and outcomes.
+               {labels.experience.description}
              </p>
           </div>
         </div>
@@ -135,8 +136,8 @@ const Experience: React.FC = () => {
              onClick={() => setIsHistoryOpen(!isHistoryOpen)}
            >
              <div className="flex flex-col">
-                <h2 className="text-3xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Professional History</h2>
-                <span className="font-mono text-xs uppercase tracking-widest text-slate-400 mt-1">Full Career Timeline</span>
+                <h2 className="text-3xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{labels.experience.historyTitle}</h2>
+                <span className="font-mono text-xs uppercase tracking-widest text-slate-400 mt-1">{labels.experience.historySubtitle}</span>
              </div>
              <div className={`p-2 rounded-full border transition-all ${isHistoryOpen ? 'bg-slate-900 text-white border-slate-900' : 'border-slate-300 text-slate-400 group-hover:border-blue-600 group-hover:text-blue-600'}`}>
                 {isHistoryOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
@@ -154,12 +155,12 @@ const Experience: React.FC = () => {
                >
                  <div className="grid lg:grid-cols-12 gap-12 pt-12">
                     <div className="lg:col-span-3 hidden lg:block">
-                       <span className="font-mono text-xs text-slate-400">Chronological Order</span>
+                       <span className="font-mono text-xs text-slate-400">{labels.experience.chronological}</span>
                     </div>
                     
                     <div className="lg:col-span-9">
                        <div className="grid md:grid-cols-2 gap-x-12 gap-y-16">
-                         {RESUME_DATA.careerHistory.map((job) => (
+                         {data.careerHistory.map((job) => (
                            <div key={job.id} className="group">
                              <div className="flex justify-between items-baseline border-b border-slate-200 pb-3 mb-4 group-hover:border-blue-600 transition-colors">
                                 <h3 className="text-xl font-bold text-slate-900">{job.company}</h3>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, User, Tag, ArrowRight } from 'lucide-react';
+import { X, Calendar, User, Tag, ArrowRight, TrendingUp } from 'lucide-react';
 import { ProjectItem } from '../types';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface ProjectModalProps {
   project: ProjectItem | null;
@@ -9,6 +10,8 @@ interface ProjectModalProps {
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
+  const { labels } = useLanguage();
+  
   if (!project) return null;
 
   return (
@@ -67,19 +70,37 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
             
             {/* Description */}
             <div>
-              <h3 className="text-sm font-bold uppercase text-slate-400 tracking-widest mb-3">Overview</h3>
+              <h3 className="text-sm font-bold uppercase text-slate-400 tracking-widest mb-3">{labels.experience.modalOverview}</h3>
               <p className="text-lg text-slate-800 leading-relaxed">
                 {project.description}
               </p>
             </div>
 
+            {/* Results (New Section) */}
+            {project.results && project.results.length > 0 && (
+              <div>
+                <h3 className="text-sm font-bold uppercase text-blue-600 tracking-widest mb-4 flex items-center gap-2">
+                  <TrendingUp size={16} />
+                  {labels.experience.modalResults}
+                </h3>
+                <ul className="grid gap-3">
+                  {project.results.map((result, idx) => (
+                    <li key={idx} className="flex gap-3 text-slate-800 font-medium leading-relaxed bg-blue-50/80 p-4 rounded-lg border border-blue-100/50 shadow-sm">
+                       <div className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                       <span>{result}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {/* Tasks / Details */}
             <div>
-              <h3 className="text-sm font-bold uppercase text-slate-400 tracking-widest mb-4">Key Responsibilities & Achievements</h3>
+              <h3 className="text-sm font-bold uppercase text-slate-400 tracking-widest mb-4">{labels.experience.modalResponsibilities}</h3>
               <ul className="grid gap-3">
                 {project.tasks.map((task, idx) => (
                   <li key={idx} className="flex gap-3 text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border border-slate-100">
-                    <ArrowRight size={18} className="text-blue-500 shrink-0 mt-0.5" />
+                    <ArrowRight size={18} className="text-slate-400 shrink-0 mt-0.5" />
                     <span>{task}</span>
                   </li>
                 ))}
@@ -88,7 +109,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
 
             {/* Tags */}
             <div>
-              <h3 className="text-sm font-bold uppercase text-slate-400 tracking-widest mb-3">Technologies & Domains</h3>
+              <h3 className="text-sm font-bold uppercase text-slate-400 tracking-widest mb-3">{labels.experience.modalTech}</h3>
               <div className="flex flex-wrap gap-2">
                 {project.tags.map(tag => (
                   <div key={tag} className="flex items-center px-3 py-1.5 bg-white border border-slate-200 rounded-full text-sm text-slate-600">
@@ -107,7 +128,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
               onClick={onClose}
               className="px-6 py-2.5 bg-slate-900 text-white font-medium rounded-lg hover:bg-slate-800 transition-colors"
             >
-              Close Details
+              {labels.experience.modalClose}
             </button>
           </div>
 

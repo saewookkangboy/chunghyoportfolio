@@ -5,24 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>박충효 | Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['"Inter"', '"Noto Sans KR"', 'sans-serif'],
-            },
-            colors: {
-              primary: '#2563eb',
-              secondary: '#475569',
-              background: '#f8fafc',
-            }
-          }
-        }
-      }
-    </script>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Noto+Sans+KR:wght@100..900&family=Noto+Sans+JP:wght@100..900&display=swap');
+      
       html {
         scroll-padding-top: 100px;
       }
@@ -34,6 +19,22 @@
           scrollbar-width: none;
       }
     </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"IBM Plex Sans KR"', '"IBM Plex Sans"', '"Noto Sans KR"', '"Noto Sans JP"', 'sans-serif'],
+            },
+            colors: {
+              primary: '#2563eb',
+              secondary: '#475569',
+              background: '#f8fafc',
+            }
+          }
+        }
+      }
+    </script>
   <script type="importmap">
 {
   "imports": {

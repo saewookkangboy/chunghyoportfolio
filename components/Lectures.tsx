@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mic, Users, ArrowUpRight } from 'lucide-react';
-import { RESUME_DATA } from '../constants';
+import { useLanguage } from '../contexts/LanguageContext';
 import { LectureItem } from '../types';
 import LectureModal from './LectureModal';
 
 const Lectures: React.FC = () => {
+  const { data, labels } = useLanguage();
   const [selectedLecture, setSelectedLecture] = useState<LectureItem | null>(null);
 
   return (
@@ -21,19 +22,19 @@ const Lectures: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="md:col-span-6"
           >
-             <h2 className="text-5xl md:text-6xl font-bold text-slate-900 tracking-tight mb-2">Lectures</h2>
-             <span className="font-mono text-sm uppercase tracking-widest text-blue-600">Speaking & Teaching</span>
+             <h2 className="text-5xl md:text-6xl font-bold text-slate-900 tracking-tight mb-2">{labels.lectures.title}</h2>
+             <span className="font-mono text-sm uppercase tracking-widest text-blue-600">{labels.lectures.subtitle}</span>
           </motion.div>
           <div className="md:col-span-6 text-right md:text-left">
              <p className="text-slate-600 text-lg leading-relaxed md:max-w-md md:ml-auto">
-               Sharing knowledge and field expertise through corporate training and educational sessions.
+               {labels.lectures.description}
              </p>
           </div>
         </div>
 
         {/* Lectures Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {RESUME_DATA.lectures.map((lecture, index) => (
+          {data.lectures.map((lecture, index) => (
             <motion.div
               key={lecture.id}
               initial={{ opacity: 0, y: 20 }}

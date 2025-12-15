@@ -1,14 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, User, Tag, ArrowRight, Mic } from 'lucide-react';
+import { X, Calendar, Tag, Mic, ChevronDown } from 'lucide-react';
 import { LectureItem } from '../types';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface LectureModalProps {
   lecture: LectureItem | null;
   onClose: () => void;
 }
 
+const DetailAccordion: React.FC<{ index: number; detail: string }> = ({ index, detail }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="border border-slate-200 rounded-lg overflow-hidden bg-slate-50 mb-3 last:mb-0">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between p-4 text-left hover:bg-slate-100 transition-colors group"
+      >
+        <span className={`font-bold text-sm transition-colors ${isOpen ? 'text-blue-600' : 'text-slate-700'}`}>
+          Topic {(index + 1).toString().padStart(2, '0')}
+        </span>
+        <ChevronDown
+          size={16}
+          className={`text-slate-400 transition-transform duration-300 group-hover:text-blue-500 ${
+            isOpen ? 'rotate-180 text-blue-500' : ''
+          }`}
+        />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
+          >
+            <div className="px-4 pb-4 pt-0 bg-white border-t border-slate-100">
+              <div className="pt-4 flex gap-3 text-sm text-slate-600 leading-relaxed">
+                 <div className="mt-2 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                 <span>{detail}</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const LectureModal: React.FC<LectureModalProps> = ({ lecture, onClose }) => {
+  const { labels } = useLanguage();
+
   if (!lecture) return null;
 
   return (
@@ -63,31 +106,28 @@ const LectureModal: React.FC<LectureModalProps> = ({ lecture, onClose }) => {
             
             {/* Description */}
             <div>
-              <h3 className="text-xs font-bold uppercase text-slate-400 tracking-widest mb-3">Summary</h3>
+              <h3 className="text-xs font-bold uppercase text-slate-400 tracking-widest mb-3">{labels.lectures.modalSummary}</h3>
               <p className="text-base text-slate-800 leading-relaxed">
                 {lecture.description}
               </p>
             </div>
 
-            {/* Curriculum / Details */}
+            {/* Curriculum / Details (Accordion) */}
             {lecture.details && lecture.details.length > 0 && (
               <div>
-                <h3 className="text-xs font-bold uppercase text-slate-400 tracking-widest mb-4">Curriculum & Key Topics</h3>
-                <ul className="grid gap-2">
+                <h3 className="text-xs font-bold uppercase text-slate-400 tracking-widest mb-4">{labels.lectures.modalCurriculum}</h3>
+                <div className="flex flex-col">
                   {lecture.details.map((detail, idx) => (
-                    <li key={idx} className="flex gap-3 text-slate-700 text-sm leading-relaxed bg-slate-50 p-3 rounded-lg border border-slate-100">
-                      <ArrowRight size={16} className="text-blue-500 shrink-0 mt-0.5" />
-                      <span>{detail}</span>
-                    </li>
+                    <DetailAccordion key={idx} index={idx} detail={detail} />
                   ))}
-                </ul>
+                </div>
               </div>
             )}
 
             {/* Tags */}
             {lecture.tags && lecture.tags.length > 0 && (
               <div>
-                <h3 className="text-xs font-bold uppercase text-slate-400 tracking-widest mb-3">Keywords</h3>
+                <h3 className="text-xs font-bold uppercase text-slate-400 tracking-widest mb-3">{labels.lectures.modalKeywords}</h3>
                 <div className="flex flex-wrap gap-2">
                   {lecture.tags.map(tag => (
                     <div key={tag} className="flex items-center px-3 py-1 bg-white border border-slate-200 rounded-full text-xs text-slate-600 font-medium">

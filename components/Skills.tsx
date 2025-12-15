@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { RESUME_DATA } from '../constants';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Skills: React.FC = () => {
+  const { data, labels } = useLanguage();
+
   return (
     <section id="skills" className="py-24 px-4 sm:px-6 lg:px-12 bg-white relative z-10 border-t border-slate-200">
       <div className="max-w-7xl mx-auto">
@@ -16,8 +18,8 @@ const Skills: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="md:col-span-6"
           >
-             <h2 className="text-5xl md:text-6xl font-bold text-slate-900 tracking-tight mb-2">Expertise</h2>
-             <span className="font-mono text-sm uppercase tracking-widest text-blue-600">Capabilities & Credentials</span>
+             <h2 className="text-5xl md:text-6xl font-bold text-slate-900 tracking-tight mb-2">{labels.skills.title}</h2>
+             <span className="font-mono text-sm uppercase tracking-widest text-blue-600">{labels.skills.subtitle}</span>
           </motion.div>
         </div>
 
@@ -26,7 +28,7 @@ const Skills: React.FC = () => {
           {/* Skills Grid */}
           <div className="lg:col-span-7">
              <div className="grid sm:grid-cols-2 gap-x-8 gap-y-12">
-               {RESUME_DATA.skills.map((category, catIndex) => (
+               {data.skills.map((category, catIndex) => (
                  <motion.div 
                    key={category.name} 
                    className="flex flex-col"
@@ -68,7 +70,7 @@ const Skills: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
                <h3 className="font-mono text-xs uppercase tracking-widest text-slate-400 mb-6 border-b border-slate-200 pb-2">
-                 Education
+                 {labels.skills.education}
                </h3>
                <div className="space-y-8">
                   <div className="group">
@@ -96,10 +98,10 @@ const Skills: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
                <h3 className="font-mono text-xs uppercase tracking-widest text-slate-400 mb-6 border-b border-slate-200 pb-2">
-                 Certifications
+                 {labels.skills.certifications}
                </h3>
                <div className="space-y-4">
-                  {RESUME_DATA.certifications.map((cert, idx) => (
+                  {data.certifications.map((cert, idx) => (
                     <div key={idx} className="flex justify-between items-start group">
                       <div>
                         <h4 className="font-bold text-slate-900 text-sm group-hover:text-blue-600 transition-colors">{cert.name}</h4>

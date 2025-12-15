@@ -1,10 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Linkedin, Globe, ExternalLink, ArrowDownRight, Github } from 'lucide-react';
-import { RESUME_DATA } from '../constants';
+import { Mail, Linkedin, Globe, ExternalLink, ArrowDownRight, Github, Sparkles } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Hero: React.FC = () => {
-  const { profile } = RESUME_DATA;
+  const { data, labels } = useLanguage();
+  const { profile } = data;
 
   return (
     <section id="about" className="min-h-screen flex flex-col justify-end pb-24 px-4 sm:px-6 lg:px-12 pt-32 relative bg-transparent">
@@ -22,7 +23,7 @@ const Hero: React.FC = () => {
               <div className="flex items-center gap-4 mb-6">
                 <span className="w-3 h-3 bg-blue-600 rounded-full"></span>
                 <span className="font-mono text-sm uppercase tracking-widest text-slate-500">
-                  Portfolio 2025
+                  {labels.hero.role}
                 </span>
               </div>
               
@@ -68,11 +69,11 @@ const Hero: React.FC = () => {
              >
                 <div>
                    <span className="block text-2xl font-bold text-slate-900">20+</span>
-                   <span className="text-xs font-mono uppercase text-slate-500">Years Exp</span>
+                   <span className="text-xs font-mono uppercase text-slate-500">{labels.hero.yearsExp}</span>
                 </div>
                 <div>
                    <span className="block text-2xl font-bold text-slate-900">1.5k%</span>
-                   <span className="text-xs font-mono uppercase text-slate-500">Max ROAS</span>
+                   <span className="text-xs font-mono uppercase text-slate-500">{labels.hero.maxRoas}</span>
                 </div>
              </motion.div>
           </div>
@@ -87,7 +88,7 @@ const Hero: React.FC = () => {
         >
           <a href={`mailto:${profile.email}`} className="flex items-center gap-2 text-lg font-medium text-slate-900 hover:text-blue-600 transition-colors group">
             <Mail size={20} />
-            <span>Email Me</span>
+            <span>{labels.hero.emailMe}</span>
             <ArrowDownRight size={16} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
           </a>
           {profile.links.map((link) => (
@@ -95,6 +96,7 @@ const Hero: React.FC = () => {
                 {link.label === 'Website' ? <Globe size={20} /> : 
                  link.label === 'LinkedIn' ? <Linkedin size={20} /> : 
                  link.label === 'GitHub' ? <Github size={20} /> : 
+                 link.label.includes('AI') ? <Sparkles size={20} className="text-purple-600 group-hover:text-blue-600" /> :
                  <ExternalLink size={20} />}
                 <span>{link.label}</span>
                 <ArrowDownRight size={16} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />

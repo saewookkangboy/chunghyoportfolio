@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Sparkles, Loader2 } from 'lucide-react';
 import { generateResumeAnswer } from '../services/geminiService';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface Message {
   role: 'user' | 'ai';
@@ -9,13 +10,17 @@ interface Message {
 }
 
 const ChatWidget: React.FC = () => {
+  const { data, labels, language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'ai', text: "안녕하세요! 박충효님의 AI 포트폴리오 어시스턴트입니다. 경력이나 프로젝트에 대해 궁금한 점을 물어보세요." }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Initialize welcome message when language changes
+  useEffect(() => {
+    setMessages([{ role: 'ai', text: labels.chat.welcome }]);
+  }, [labels.chat.welcome]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -23,7 +28,7 @@ const ChatWidget: React.FC = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isOpen]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -33,7 +38,8 @@ const ChatWidget: React.FC = () => {
     setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
     setIsLoading(true);
 
-    const response = await generateResumeAnswer(userMsg);
+    // Pass the current context data and language to the service
+    const response = await generateResumeAnswer(userMsg, data, language);
     
     setMessages(prev => [...prev, { role: 'ai', text: response }]);
     setIsLoading(false);
@@ -54,7 +60,7 @@ const ChatWidget: React.FC = () => {
           className="flex items-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors"
         >
           {isOpen ? <X size={20} /> : <MessageSquare size={20} />}
-          <span className="font-medium hidden sm:inline">{isOpen ? '닫기' : 'AI에게 질문하기'}</span>
+          <span className="font-medium hidden sm:inline">{isOpen ? labels.chat.closeButton : labels.chat.openButton}</span>
         </button>
       </div>
 
@@ -72,8 +78,8 @@ const ChatWidget: React.FC = () => {
                 <Sparkles size={18} className="text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-white text-sm">Portfolio Assistant</h3>
-                <p className="text-xs text-blue-200">Powered by Gemini</p>
+                <h3 className="font-bold text-white text-sm">{labels.chat.assistantName}</h3>
+                <p className="text-xs text-blue-200">{labels.chat.poweredBy}</p>
               </div>
             </div>
 
@@ -108,7 +114,7 @@ const ChatWidget: React.FC = () => {
                 <input
                   type="text"
                   className="flex-1 bg-transparent border-none outline-none text-sm py-1"
-                  placeholder="예: 버거킹 프로젝트 성과는?"
+                  placeholder={labels.chat.placeholder}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyPress}
