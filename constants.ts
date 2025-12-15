@@ -6,10 +6,20 @@ export const RESUME_DATA: PortfolioData = {
     englishName: "Park Chunghyo",
     email: "chunghyo@troe.kr",
     phone: "010-9174-1074",
-    summary: "18년차 마케팅 전략가. 웹서비스, 리서치, 콘텐츠, 에이전시, 컨설팅 펌을 거쳐 개인 사업까지 다양한 스펙트럼을 보유하고 있습니다. '현장에서 답을 찾고, Learn-by-doing'을 모토로 삼으며, 그로스, 브랜드, 콘텐츠, 커뮤니케이션을 아우르는 통합적인 마케팅 전략을 수립합니다. 데이터와 크리에이티브의 결합을 통해 Specialist에서 Expert로 성장하고 있습니다.",
+    summary: `20년차 마케팅 전략 전문가 & AI X 마케팅 빌더,
+웹서비스, 리서치, 콘텐츠, 에이전시, 컨설팅 펌을 거쳐
+개인 비즈니스까지 다양한 스펙트럼 보유
+
+'현장에서 답을 찾고, Learn-by-Doing'을 모토로
+그로스, 브랜드, 콘텐츠, 커뮤니케이션 및
+데이터 기반의 의사결정을 아우르는 통합적인 마케팅 전략을 수립
+
+AI 기술, 데이터와 크리에이티브의 결합을 통해 
+지속적인 Expert로 성장하고 있습니다.`,
     links: [
       { label: "Website", url: "https://troe.kr" },
-      { label: "LinkedIn", url: "https://www.linkedin.com/in/saewookkangboy/" },
+      { label: "LinkedIn", url: "https://www.linkedin.com/in/chunghyopark/" },
+      { label: "GitHub", url: "https://github.com/saewookkangboy" },
       { label: "Brunch", url: "https://brunch.co.kr/@saewookkangboy" }
     ]
   },
@@ -220,7 +230,68 @@ export const RESUME_DATA: PortfolioData = {
   certifications: [
     { name: "Meta Creative Strategy Professional", date: "2022.06", issuer: "Meta" },
     { name: "Meta Media Planning Professional", date: "2022.04", issuer: "Meta" },
-    { name: "Google Analytics 4 기초 실무", date: "2023.10" },
     { name: "Apple Search Ads Certificate", date: "2021.11" }
+  ],
+  lectures: [
+    {
+      id: "l1",
+      title: "디지털 콘텐츠 마케팅 실무 교육",
+      organizer: "(주)마플 코퍼레이션",
+      period: "2023",
+      role: "Instructor",
+      description: "마케팅 팀 대상 콘텐츠 기획, 커뮤니케이션 가이드라인 및 성과 측정 방법론 교육",
+      details: [
+        "콘텐츠 기획 프로세스 및 템플릿 제공",
+        "브랜드 톤앤매너 설정 및 커뮤니케이션 가이드라인 수립",
+        "콘텐츠 성과 측정을 위한 핵심 데이터 지표(KPI) 설정 방법론",
+        "실무자를 위한 카피라이팅 및 크리에이티브 워크샵"
+      ],
+      tags: ["Content Planning", "Brand Guideline", "Performance Metrics", "Workshop"]
+    },
+    {
+      id: "l2",
+      title: "프로그래머틱 광고 및 DMP 운영 교육",
+      organizer: "삼성전자 (Samsung Electronics)",
+      period: "2017 - 2019",
+      role: "Technical Instructor",
+      description: "모바일 사업부 대상 프로그래머틱 광고 생태계 이해 및 DMP 활용 기술 교육",
+      details: [
+        "Ad Tech Ecosystem (DSP, DMP, SSP, Ad Exchange)의 구조적 이해",
+        "DMP(Data Management Platform) 기반 오디언스 세그먼테이션 기술",
+        "Global RTB(Real Time Bidding) 시스템 작동 원리 및 사례 분석",
+        "모바일 디바이스 데이터 활용 및 프라이버시 이슈 대응"
+      ],
+      tags: ["Ad Tech", "DMP", "Programmatic Ads", "Mobile Data"]
+    },
+    {
+      id: "l3",
+      title: "Google Analytics 4 기초 실무",
+      organizer: "Corporate / Public",
+      period: "2023.10",
+      role: "Instructor",
+      description: "GA4 기본 설정 및 데이터 분석 기초 실무 강의",
+      details: [
+        "UA(Universal Analytics)와 GA4의 주요 차이점 및 데이터 모델 이해",
+        "이벤트(Event) 기반 수집 구조 및 매개변수 설정 실습",
+        "탐색(Explore) 보고서를 활용한 고객 여정 및 유입 경로 분석",
+        "맞춤 보고서(Custom Report) 생성 및 데이터 시각화 기초"
+      ],
+      tags: ["GA4", "Data Analysis", "Tracking Setup", "Visualization"]
+    },
+    {
+      id: "l4",
+      title: "디지털 마케팅 전략 및 트렌드 특강",
+      organizer: "각종 기업 및 대학",
+      period: "2018 - Present",
+      role: "Speaker",
+      description: "디지털 마케팅 최신 트렌드, 데이터 기반 의사결정, 브랜드 커뮤니케이션 전략 특강 다수 진행",
+      details: [
+        "AI 시대의 디지털 마케팅 트렌드 변화 및 대응 전략",
+        "데이터 드리븐(Data-Driven) 의사결정 프로세스 및 성공 사례",
+        "소비자 행동 심리학과 브랜드 스토리텔링 전략",
+        "퍼포먼스 마케팅과 브랜딩의 균형 성장(Growth) 전략"
+      ],
+      tags: ["Marketing Trends", "Data Driven", "Brand Storytelling", "Growth Strategy"]
+    }
   ]
 };

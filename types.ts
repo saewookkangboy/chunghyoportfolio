@@ -30,6 +30,17 @@ export interface Certification {
   issuer?: string;
 }
 
+export interface LectureItem {
+  id: string;
+  title: string;
+  organizer: string;
+  period: string;
+  role: string;
+  description: string;
+  details: string[];
+  tags: string[];
+}
+
 export interface PortfolioData {
   profile: {
     name: string;
@@ -43,4 +54,5 @@ export interface PortfolioData {
   careerHistory: CareerItem[];
   skills: SkillCategory[];
   certifications: Certification[];
+  lectures: LectureItem[];
 }

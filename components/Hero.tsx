@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Linkedin, Globe, ExternalLink, ArrowDownRight } from 'lucide-react';
+import { Mail, Linkedin, Globe, ExternalLink, ArrowDownRight, Github } from 'lucide-react';
 import { RESUME_DATA } from '../constants';
 
 const Hero: React.FC = () => {
@@ -36,7 +36,7 @@ const Hero: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-xl sm:text-2xl text-slate-700 leading-relaxed max-w-3xl font-light"
+              className="text-xl sm:text-2xl text-slate-700 leading-relaxed max-w-3xl font-light whitespace-pre-line"
             >
               {profile.summary}
             </motion.p>
@@ -67,7 +67,7 @@ const Hero: React.FC = () => {
                className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200"
              >
                 <div>
-                   <span className="block text-2xl font-bold text-slate-900">18+</span>
+                   <span className="block text-2xl font-bold text-slate-900">20+</span>
                    <span className="text-xs font-mono uppercase text-slate-500">Years Exp</span>
                 </div>
                 <div>
@@ -92,7 +92,10 @@ const Hero: React.FC = () => {
           </a>
           {profile.links.map((link) => (
              <a key={link.label} href={link.url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-lg font-medium text-slate-900 hover:text-blue-600 transition-colors group">
-                {link.label === 'Website' ? <Globe size={20} /> : link.label === 'LinkedIn' ? <Linkedin size={20} /> : <ExternalLink size={20} />}
+                {link.label === 'Website' ? <Globe size={20} /> : 
+                 link.label === 'LinkedIn' ? <Linkedin size={20} /> : 
+                 link.label === 'GitHub' ? <Github size={20} /> : 
+                 <ExternalLink size={20} />}
                 <span>{link.label}</span>
                 <ArrowDownRight size={16} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
              </a>

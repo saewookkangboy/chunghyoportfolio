@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { RESUME_DATA } from '../constants';
 
 const Skills: React.FC = () => {
@@ -8,10 +9,16 @@ const Skills: React.FC = () => {
         
         {/* Header */}
         <div className="grid md:grid-cols-12 gap-8 mb-16 border-b border-slate-900 pb-8 items-end">
-          <div className="md:col-span-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+            className="md:col-span-6"
+          >
              <h2 className="text-5xl md:text-6xl font-bold text-slate-900 tracking-tight mb-2">Expertise</h2>
              <span className="font-mono text-sm uppercase tracking-widest text-blue-600">Capabilities & Credentials</span>
-          </div>
+          </motion.div>
         </div>
 
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-24">
@@ -19,19 +26,33 @@ const Skills: React.FC = () => {
           {/* Skills Grid */}
           <div className="lg:col-span-7">
              <div className="grid sm:grid-cols-2 gap-x-8 gap-y-12">
-               {RESUME_DATA.skills.map((category) => (
-                 <div key={category.name} className="flex flex-col">
+               {RESUME_DATA.skills.map((category, catIndex) => (
+                 <motion.div 
+                   key={category.name} 
+                   className="flex flex-col"
+                   initial={{ opacity: 0, y: 20 }}
+                   whileInView={{ opacity: 1, y: 0 }}
+                   viewport={{ once: true, margin: "-50px" }}
+                   transition={{ duration: 0.5, delay: catIndex * 0.1 }}
+                 >
                    <h3 className="text-lg font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">
                      {category.name}
                    </h3>
                    <ul className="space-y-3">
-                     {category.items.map((item) => (
-                       <li key={item} className="text-slate-600 text-sm font-medium hover:text-blue-600 transition-colors cursor-default">
+                     {category.items.map((item, itemIndex) => (
+                       <motion.li 
+                         key={item} 
+                         className="text-slate-600 text-sm font-medium hover:text-blue-600 transition-colors cursor-default"
+                         initial={{ opacity: 0, x: -10 }}
+                         whileInView={{ opacity: 1, x: 0 }}
+                         viewport={{ once: true }}
+                         transition={{ duration: 0.3, delay: (catIndex * 0.1) + (itemIndex * 0.05) }}
+                       >
                          {item}
-                       </li>
+                       </motion.li>
                      ))}
                    </ul>
-                 </div>
+                 </motion.div>
                ))}
              </div>
           </div>
@@ -40,7 +61,12 @@ const Skills: React.FC = () => {
           <div className="lg:col-span-5 space-y-16">
             
             {/* Education */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
                <h3 className="font-mono text-xs uppercase tracking-widest text-slate-400 mb-6 border-b border-slate-200 pb-2">
                  Education
                </h3>
@@ -60,10 +86,15 @@ const Skills: React.FC = () => {
                     <p className="text-slate-600">Financial Insurance</p>
                   </div>
                </div>
-            </div>
+            </motion.div>
 
             {/* Certifications */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
                <h3 className="font-mono text-xs uppercase tracking-widest text-slate-400 mb-6 border-b border-slate-200 pb-2">
                  Certifications
                </h3>
@@ -78,7 +109,7 @@ const Skills: React.FC = () => {
                     </div>
                   ))}
                </div>
-            </div>
+            </motion.div>
 
           </div>
 
