@@ -11,36 +11,71 @@ import InteractiveBackground from './components/InteractiveBackground';
 import AdminPage from './components/admin/AdminPage';
 
 const App: React.FC = () => {
-  // 초기 상태를 즉시 확인 (렌더링 전에)
-  const checkAdminRoute = () => {
+  // Admin 페이지 접근 확인 함수
+  const checkAdminRoute = (): boolean => {
     if (typeof window === 'undefined') return false;
+    
     const hash = window.location.hash;
-    const params = new URLSearchParams(window.location.search);
-    return hash === '#admin' || params.get('admin') === 'true';
+    const search = window.location.search;
+    const pathname = window.location.pathname;
+    
+    // 여러 방법으로 체크
+    const isHashAdmin = hash === '#admin' || hash.startsWith('#admin');
+    const isQueryAdmin = search.includes('admin=true');
+    const isPathAdmin = pathname.includes('/admin');
+    
+    const result = isHashAdmin || isQueryAdmin || isPathAdmin;
+    
+    // 디버깅용 로그 (개발 환경에서만)
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Admin route check:', {
+        hash,
+        search,
+        pathname,
+        isHashAdmin,
+        isQueryAdmin,
+        isPathAdmin,
+        result
+      });
+    }
+    
+    return result;
   };
 
-  const [isAdmin, setIsAdmin] = useState(checkAdminRoute());
+  const [isAdmin, setIsAdmin] = useState(() => {
+    // 초기 상태를 함수로 설정하여 렌더링 시점에 체크
+    return checkAdminRoute();
+  });
 
   useEffect(() => {
-    // Admin 페이지 접근 확인 함수
-    const checkRoute = () => {
-      const hash = window.location.hash;
-      const params = new URLSearchParams(window.location.search);
-      return hash === '#admin' || params.get('admin') === 'true';
-    };
+    // 초기 체크
+    const initialCheck = checkAdminRoute();
+    if (initialCheck !== isAdmin) {
+      setIsAdmin(initialCheck);
+    }
 
     // 해시 변경 감지
     const handleHashChange = () => {
-      setIsAdmin(checkRoute());
+      const shouldBeAdmin = checkAdminRoute();
+      setIsAdmin(shouldBeAdmin);
     };
 
-    // 쿼리 파라미터 변경 감지
+    // 쿼리 파라미터 및 경로 변경 감지
     const handlePopState = () => {
-      setIsAdmin(checkRoute());
+      const shouldBeAdmin = checkAdminRoute();
+      setIsAdmin(shouldBeAdmin);
     };
 
-    // 초기 체크 (useEffect 내에서도 한 번 더 확인)
-    setIsAdmin(checkRoute());
+    // 주기적 체크 (SPA 환경에서 해시 변경이 감지되지 않는 경우 대비)
+    const intervalId = setInterval(() => {
+      const shouldBeAdmin = checkAdminRoute();
+      setIsAdmin(prev => {
+        if (prev !== shouldBeAdmin) {
+          return shouldBeAdmin;
+        }
+        return prev;
+      });
+    }, 1000);
 
     window.addEventListener('hashchange', handleHashChange);
     window.addEventListener('popstate', handlePopState);
@@ -48,8 +83,9 @@ const App: React.FC = () => {
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
       window.removeEventListener('popstate', handlePopState);
+      clearInterval(intervalId);
     };
-  }, []);
+  }, [isAdmin]);
 
   if (isAdmin) {
     return <AdminPage />;
