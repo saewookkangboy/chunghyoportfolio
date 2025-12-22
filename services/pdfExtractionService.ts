@@ -8,9 +8,14 @@ export const extractProjectsFromPDF = async (
   try {
     const apiKey = process.env.API_KEY;
     if (!apiKey) {
-      throw new Error("API Key is missing");
+      console.error('API Key 확인:', {
+        hasApiKey: !!apiKey,
+        envKeys: Object.keys(process.env).filter(k => k.includes('API') || k.includes('GEMINI'))
+      });
+      throw new Error("Gemini API Key가 설정되지 않았습니다. .env.local 파일에 GEMINI_API_KEY를 설정해주세요.");
     }
 
+    console.log('Gemini API 호출 시작...');
     const ai = new GoogleGenAI({ apiKey });
 
     const prompt = `
@@ -59,29 +64,62 @@ ${pdfText.substring(0, 50000)} ${pdfText.length > 50000 ? '...(텍스트가 길�
     });
 
     const responseText = response.text || '[]';
+    console.log('Gemini API 응답 받음:', responseText.substring(0, 200));
     
     // JSON 파싱 시도
     try {
-      const extracted = JSON.parse(responseText) as ExtractedProject[];
+      // 응답에서 JSON 부분만 추출 (마크다운 코드 블록 제거)
+      let jsonText = responseText.trim();
+      if (jsonText.startsWith('```')) {
+        const lines = jsonText.split('\n');
+        jsonText = lines.slice(1, -1).join('\n').trim();
+      }
+      if (jsonText.startsWith('json')) {
+        jsonText = jsonText.substring(4).trim();
+      }
+      
+      const extracted = JSON.parse(jsonText) as ExtractedProject[];
+      console.log(`프로젝트 추출 성공: ${extracted.length}개`);
       
       // 유효성 검사 및 정리
-      return extracted
+      const validProjects = extracted
         .filter((item) => item.period && item.company && item.projectName)
         .map((item) => ({
           ...item,
           tasks: item.tasks || [],
           description: item.description || item.projectName,
         }));
+      
+      if (validProjects.length === 0) {
+        console.warn('유효한 프로젝트가 없음, 대체 방법 시도');
+        return extractProjectsFromText(pdfText);
+      }
+      
+      return validProjects;
     } catch (parseError) {
       console.error('JSON 파싱 오류:', parseError);
-      console.error('응답 텍스트:', responseText);
+      console.error('응답 텍스트 (처음 500자):', responseText.substring(0, 500));
       
       // JSON 파싱 실패 시 텍스트에서 수동 추출 시도
+      console.log('대체 방법으로 프로젝트 추출 시도...');
       return extractProjectsFromText(pdfText);
     }
   } catch (error) {
-    console.error("PDF 추출 서비스 오류:", error);
-    throw new Error("프로젝트 정보 추출 중 오류가 발생했습니다: " + (error as Error).message);
+    console.error("PDF 추출 서비스 오류 상세:", error);
+    
+    if (error instanceof Error) {
+      // API 키 오류
+      if (error.message.includes('API Key') || error.message.includes('API_KEY')) {
+        throw new Error("Gemini API Key가 설정되지 않았습니다. .env.local 파일에 GEMINI_API_KEY를 설정해주세요.");
+      }
+      // 네트워크 오류
+      if (error.message.includes('fetch') || error.message.includes('network')) {
+        throw new Error("네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.");
+      }
+      // 기타 오류
+      throw new Error(`프로젝트 정보 추출 중 오류가 발생했습니다: ${error.message}`);
+    }
+    throw new Error("프로젝트 정보 추출 중 알 수 없는 오류가 발생했습니다.");
   }
 };
 

@@ -59,7 +59,14 @@ const PDFUploadAdmin: React.FC<PDFUploadAdminProps> = ({ language, onSave }) => 
     } catch (err) {
       setIsUploading(false);
       setIsExtracting(false);
-      setError((err as Error).message || 'PDF 처리 중 오류가 발생했습니다.');
+      const errorMessage = err instanceof Error ? err.message : 'PDF 처리 중 오류가 발생했습니다.';
+      console.error('PDF 업로드 오류 상세:', err);
+      setError(errorMessage);
+      
+      // 에러를 더 자세히 표시
+      if (errorMessage.includes('API Key')) {
+        setError(`${errorMessage}\n\n.env.local 파일에 GEMINI_API_KEY를 설정해주세요.`);
+      }
     }
   };
 
