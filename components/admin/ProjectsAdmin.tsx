@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Save, Plus, Trash2, Edit2, X, Check, Loader2 } from 'lucide-react';
+import { Save, Plus, Trash2, Edit2, X, Check, Loader2, Download } from 'lucide-react';
 import { PortfolioData, ProjectItem } from '../../types';
 import { savePortfolioData, loadPortfolioData, getDefaultData } from '../../utils/adminStorage';
 import { saveWithAutoTranslation } from '../../utils/autoTranslate';
+import { ExtractedProject } from '../../utils/pdfExtractor';
 
 interface ProjectsAdminProps {
   language: 'ko' | 'en' | 'ja';
@@ -14,11 +15,62 @@ const ProjectsAdmin: React.FC<ProjectsAdminProps> = ({ language, onSave }) => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [translationProgress, setTranslationProgress] = useState<string>('');
+  const [isDragOver, setIsDragOver] = useState(false);
 
   useEffect(() => {
     const saved = loadPortfolioData(language);
     setProjects(saved?.projects || getDefaultData(language).projects);
   }, [language]);
+
+  // 드롭 이벤트 처리
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+
+    try {
+      const data = e.dataTransfer.getData('application/json');
+      if (!data) return;
+
+      const dragData = JSON.parse(data);
+      if (dragData.type === 'extracted-project') {
+        const extracted = dragData.project as ExtractedProject;
+        
+        // ExtractedProject를 ProjectItem으로 변환
+        const newProject: ProjectItem = {
+          id: `p${Date.now()}`,
+          client: extracted.company,
+          role: '',
+          period: extracted.period,
+          description: extracted.description || extracted.projectName,
+          tasks: extracted.tasks || [],
+          results: [],
+          tags: [],
+          category: 'Consulting',
+        };
+
+        // 프로젝트 목록에 추가
+        setProjects([newProject, ...projects]);
+        setEditingId(newProject.id); // 자동으로 편집 모드로 전환
+        
+        alert(`"${extracted.company}" 프로젝트가 추가되었습니다. 내용을 확인하고 저장해주세요.`);
+      }
+    } catch (error) {
+      console.error('드롭 처리 오류:', error);
+    }
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -140,6 +192,25 @@ const ProjectsAdmin: React.FC<ProjectsAdminProps> = ({ language, onSave }) => {
               {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
               {isSaving ? (translationProgress || '저장 중...') : '저장'}
             </button>
+          </div>
+        </div>
+
+        {/* 드롭 존 */}
+        <div
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          className={`mb-4 p-6 border-2 border-dashed rounded-lg transition-all ${
+            isDragOver
+              ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+              : 'border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50'
+          }`}
+        >
+          <div className="flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400">
+            <Download size={20} />
+            <span className="text-sm font-medium">
+              PDF에서 추출한 프로젝트를 여기로 드래그하세요
+            </span>
           </div>
         </div>
 

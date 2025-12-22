@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Save, Plus, Trash2, Edit2, X, Check, Loader2 } from 'lucide-react';
+import { Save, Plus, Trash2, Edit2, X, Check, Loader2, Download } from 'lucide-react';
 import { PortfolioData, CareerItem } from '../../types';
 import { savePortfolioData, loadPortfolioData, getDefaultData } from '../../utils/adminStorage';
 import { saveWithAutoTranslation } from '../../utils/autoTranslate';
+import { ExtractedProject } from '../../utils/pdfExtractor';
 
 interface CareerAdminProps {
   language: 'ko' | 'en' | 'ja';
@@ -14,11 +15,60 @@ const CareerAdmin: React.FC<CareerAdminProps> = ({ language, onSave }) => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [translationProgress, setTranslationProgress] = useState<string>('');
+  const [isDragOver, setIsDragOver] = useState(false);
 
   useEffect(() => {
     const saved = loadPortfolioData(language);
     setCareers(saved?.careerHistory || getDefaultData(language).careerHistory);
   }, [language]);
+
+  // 드롭 이벤트 처리
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+
+    try {
+      const data = e.dataTransfer.getData('application/json');
+      if (!data) return;
+
+      const dragData = JSON.parse(data);
+      if (dragData.type === 'extracted-project') {
+        const extracted = dragData.project as ExtractedProject;
+        
+        // ExtractedProject를 CareerItem으로 변환
+        const newCareer: CareerItem = {
+          id: `c${Date.now()}`,
+          company: extracted.company,
+          role: '',
+          period: extracted.period,
+          type: 'In-House',
+          description: extracted.description || extracted.projectName,
+          details: extracted.tasks || [],
+        };
+
+        // 경력 목록에 추가
+        setCareers([newCareer, ...careers]);
+        setEditingId(newCareer.id); // 자동으로 편집 모드로 전환
+        
+        alert(`"${extracted.company}" 경력이 추가되었습니다. 내용을 확인하고 저장해주세요.`);
+      }
+    } catch (error) {
+      console.error('드롭 처리 오류:', error);
+    }
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -132,6 +182,25 @@ const CareerAdmin: React.FC<CareerAdminProps> = ({ language, onSave }) => {
               {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
               {isSaving ? (translationProgress || '저장 중...') : '저장'}
             </button>
+          </div>
+        </div>
+
+        {/* 드롭 존 */}
+        <div
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          className={`mb-4 p-6 border-2 border-dashed rounded-lg transition-all ${
+            isDragOver
+              ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+              : 'border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50'
+          }`}
+        >
+          <div className="flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400">
+            <Download size={20} />
+            <span className="text-sm font-medium">
+              PDF에서 추출한 프로젝트를 여기로 드래그하여 경력으로 추가하세요
+            </span>
           </div>
         </div>
 

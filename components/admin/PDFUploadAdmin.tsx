@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, FileText, Loader2, CheckCircle, X, Plus, Save, AlertTriangle } from 'lucide-react';
+import { Upload, FileText, Loader2, CheckCircle, X, Plus, Save, AlertTriangle, GripVertical } from 'lucide-react';
 import { extractTextFromPDF } from '../../utils/pdfExtractor';
 import { extractProjectsFromPDF } from '../../services/pdfExtractionService';
 import { ExtractedProject } from '../../utils/pdfExtractor';
@@ -247,6 +247,9 @@ const PDFUploadAdmin: React.FC<PDFUploadAdminProps> = ({ language, onSave }) => 
                     {duplicateIndices.size}개의 중복 프로젝트가 발견되었습니다 (자동 선택 해제됨)
                   </p>
                 )}
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  💡 프로젝트를 드래그하여 "프로젝트 관리" 또는 "경력 이력 관리" 영역으로 이동할 수 있습니다
+                </p>
               </div>
               <button
                 onClick={handleSaveSelected}
@@ -263,19 +266,49 @@ const PDFUploadAdmin: React.FC<PDFUploadAdminProps> = ({ language, onSave }) => 
                 const isSelected = selectedProjects.has(index);
                 const isDuplicate = duplicateIndices.has(index);
                 const existingProject = duplicateInfo.get(index);
+                
+                // 드래그 시작
+                const handleDragStart = (e: React.DragEvent) => {
+                  if (isDuplicate) {
+                    e.preventDefault();
+                    return;
+                  }
+                  const dragData = {
+                    type: 'extracted-project',
+                    index,
+                    project,
+                  };
+                  e.dataTransfer.setData('application/json', JSON.stringify(dragData));
+                  e.dataTransfer.effectAllowed = 'move';
+                  // 드래그 중 시각적 피드백
+                  (e.currentTarget as HTMLElement).style.opacity = '0.5';
+                };
+                
+                const handleDragEnd = (e: React.DragEvent) => {
+                  (e.currentTarget as HTMLElement).style.opacity = '1';
+                };
+                
                 return (
                   <div
                     key={index}
+                    draggable={!isDuplicate}
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
                     className={`border rounded-lg p-4 transition-all ${
                       isDuplicate
-                        ? 'border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/10'
+                        ? 'border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/10 cursor-not-allowed'
                         : isSelected
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 cursor-pointer'
-                        : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 cursor-pointer'
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 cursor-move hover:shadow-lg'
+                        : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 cursor-move hover:shadow-md'
                     }`}
                     onClick={() => !isDuplicate && toggleProjectSelection(index)}
                   >
                     <div className="flex items-start gap-3">
+                      {!isDuplicate && (
+                        <div className="mt-1 text-slate-400 dark:text-slate-500 cursor-move" title="드래그하여 이동">
+                          <GripVertical size={20} />
+                        </div>
+                      )}
                       <div className={`mt-1 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
                         isSelected
                           ? 'border-blue-500 bg-blue-500'
