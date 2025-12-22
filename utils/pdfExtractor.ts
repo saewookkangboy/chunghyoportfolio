@@ -1,15 +1,23 @@
 import * as pdfjsLib from 'pdfjs-dist';
 
 // PDF.js worker 설정
+// Vite 환경에서 worker 파일을 올바르게 로드하기 위한 설정
 if (typeof window !== 'undefined') {
-  // pdfjs-dist 버전에 맞는 worker URL 설정
-  // 버전 5.x는 다른 경로 구조를 사용할 수 있으므로 CDN 사용
-  const version = pdfjsLib.version || '5.4.449';
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.mjs`;
-  
-  // Worker 로드 실패 시 대체 URL 시도
-  const originalWorkerSrc = pdfjsLib.GlobalWorkerOptions.workerSrc;
-  console.log('PDF.js Worker 설정:', originalWorkerSrc);
+  // 개발/프로덕션 환경 모두에서 작동하도록 동적 import 사용
+  (async () => {
+    try {
+      // 방법 1: Vite의 ?url import를 사용 (개발/프로덕션 모두 지원)
+      const workerModule = await import('pdfjs-dist/build/pdf.worker.min.mjs?url');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = workerModule.default;
+      console.log('PDF.js Worker 설정 (로컬):', pdfjsLib.GlobalWorkerOptions.workerSrc);
+    } catch (e) {
+      console.warn('로컬 worker 로드 실패, CDN 사용:', e);
+      // 방법 2: CDN fallback (안정적인 버전)
+      const version = '4.0.379';
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`;
+      console.log('PDF.js Worker 설정 (CDN):', pdfjsLib.GlobalWorkerOptions.workerSrc);
+    }
+  })();
 }
 
 export interface ExtractedProject {
