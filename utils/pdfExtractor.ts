@@ -1,23 +1,32 @@
 import * as pdfjsLib from 'pdfjs-dist';
 
 // PDF.js worker 설정
-// Vite 환경에서 worker 파일을 올바르게 로드하기 위한 설정
+// 프로덕션 환경에서 안정적으로 작동하도록 CDN 사용
 if (typeof window !== 'undefined') {
-  // 개발/프로덕션 환경 모두에서 작동하도록 동적 import 사용
-  (async () => {
-    try {
-      // 방법 1: Vite의 ?url import를 사용 (개발/프로덕션 모두 지원)
-      const workerModule = await import('pdfjs-dist/build/pdf.worker.min.mjs?url');
-      pdfjsLib.GlobalWorkerOptions.workerSrc = workerModule.default;
-      console.log('PDF.js Worker 설정 (로컬):', pdfjsLib.GlobalWorkerOptions.workerSrc);
-    } catch (e) {
-      console.warn('로컬 worker 로드 실패, CDN 사용:', e);
-      // 방법 2: CDN fallback (안정적인 버전)
-      const version = '4.0.379';
-      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`;
-      console.log('PDF.js Worker 설정 (CDN):', pdfjsLib.GlobalWorkerOptions.workerSrc);
-    }
-  })();
+  // 프로덕션 빌드에서는 CDN을 기본으로 사용 (가장 안정적)
+  // 개발 환경에서는 로컬 파일 시도, 실패 시 CDN 사용
+  const isProduction = import.meta.env.PROD;
+  
+  if (isProduction) {
+    // 프로덕션: CDN 사용 (안정적인 버전)
+    const version = '4.0.379';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`;
+    console.log('PDF.js Worker 설정 (프로덕션 CDN):', pdfjsLib.GlobalWorkerOptions.workerSrc);
+  } else {
+    // 개발 환경: 로컬 파일 시도, 실패 시 CDN
+    (async () => {
+      try {
+        const workerModule = await import('pdfjs-dist/build/pdf.worker.min.mjs?url');
+        pdfjsLib.GlobalWorkerOptions.workerSrc = workerModule.default;
+        console.log('PDF.js Worker 설정 (개발 로컬):', pdfjsLib.GlobalWorkerOptions.workerSrc);
+      } catch (e) {
+        console.warn('로컬 worker 로드 실패, CDN 사용:', e);
+        const version = '4.0.379';
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`;
+        console.log('PDF.js Worker 설정 (개발 CDN):', pdfjsLib.GlobalWorkerOptions.workerSrc);
+      }
+    })();
+  }
 }
 
 export interface ExtractedProject {
