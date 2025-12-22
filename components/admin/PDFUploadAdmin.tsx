@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Upload, FileText, Loader2, CheckCircle, X, Plus, Save } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Upload, FileText, Loader2, CheckCircle, X, Plus, Save, AlertTriangle } from 'lucide-react';
 import { extractTextFromPDF } from '../../utils/pdfExtractor';
 import { extractProjectsFromPDF } from '../../services/pdfExtractionService';
 import { ExtractedProject } from '../../utils/pdfExtractor';
 import { ProjectItem } from '../../types';
 import { savePortfolioData, loadPortfolioData, getDefaultData } from '../../utils/adminStorage';
+import { findDuplicates } from '../../utils/duplicateChecker';
 
 interface PDFUploadAdminProps {
   language: 'ko' | 'en' | 'ja';
@@ -16,7 +17,16 @@ const PDFUploadAdmin: React.FC<PDFUploadAdminProps> = ({ language, onSave }) => 
   const [isExtracting, setIsExtracting] = useState(false);
   const [extractedProjects, setExtractedProjects] = useState<ExtractedProject[]>([]);
   const [selectedProjects, setSelectedProjects] = useState<Set<number>>(new Set());
+  const [duplicateIndices, setDuplicateIndices] = useState<Set<number>>(new Set());
+  const [duplicateInfo, setDuplicateInfo] = useState<Map<number, ProjectItem>>(new Map());
   const [error, setError] = useState<string>('');
+  const [existingProjects, setExistingProjects] = useState<ProjectItem[]>([]);
+
+  // 기존 프로젝트 로드
+  useEffect(() => {
+    const saved = loadPortfolioData(language) || getDefaultData(language);
+    setExistingProjects(saved.projects || []);
+  }, [language]);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -53,9 +63,24 @@ const PDFUploadAdmin: React.FC<PDFUploadAdminProps> = ({ language, onSave }) => 
         return;
       }
 
+      // 기존 프로젝트와 중복 체크
+      const currentData = loadPortfolioData(language) || getDefaultData(language);
+      const { duplicates, duplicateInfo: dupInfo } = findDuplicates(projects, currentData.projects);
+      
       setExtractedProjects(projects);
-      // 모든 프로젝트를 기본 선택
-      setSelectedProjects(new Set(projects.map((_, index) => index)));
+      setDuplicateIndices(new Set(duplicates));
+      setDuplicateInfo(dupInfo);
+      
+      // 중복되지 않은 프로젝트만 기본 선택
+      const nonDuplicateIndices = projects
+        .map((_, index) => index)
+        .filter(index => !duplicates.includes(index));
+      setSelectedProjects(new Set(nonDuplicateIndices));
+      
+      // 중복이 있으면 알림
+      if (duplicates.length > 0) {
+        console.log(`${duplicates.length}개의 중복 프로젝트가 발견되었습니다.`);
+      }
     } catch (err) {
       setIsUploading(false);
       setIsExtracting(false);
@@ -86,7 +111,6 @@ const PDFUploadAdmin: React.FC<PDFUploadAdminProps> = ({ language, onSave }) => 
       return;
     }
 
-    const saved = loadPortfolioData(language) || getDefaultData(language);
     const selectedProjectsData = Array.from(selectedProjects)
       .map((index) => {
         const extracted = extractedProjects[index];
@@ -104,18 +128,44 @@ const PDFUploadAdmin: React.FC<PDFUploadAdminProps> = ({ language, onSave }) => 
         return project;
       });
 
-    // 기존 프로젝트에 추가
-    const updated: typeof saved = {
-      ...saved,
-      projects: [...selectedProjectsData, ...saved.projects],
+    // 중복 체크: 선택한 프로젝트 중 기존 프로젝트와 중복되는 것 제외
+    const currentData = loadPortfolioData(language) || getDefaultData(language);
+    const { duplicates: newDuplicates } = findDuplicates(
+      selectedProjectsData.map(p => ({
+        period: p.period,
+        company: p.client,
+        projectName: p.description,
+        description: p.description,
+        tasks: p.tasks,
+      })),
+      currentData.projects
+    );
+    
+    // 중복되지 않은 프로젝트만 추가
+    const uniqueProjects = selectedProjectsData.filter((_, index) => 
+      !newDuplicates.includes(index)
+    );
+    
+    // 기존 프로젝트에 추가 (중복 제외)
+    const updated: typeof currentData = {
+      ...currentData,
+      projects: [...uniqueProjects, ...currentData.projects],
     };
 
     savePortfolioData(language, updated);
-    alert(`${selectedProjects.size}개의 프로젝트가 저장되었습니다!`);
+    
+    const duplicateCount = selectedProjects.size - uniqueProjects.length;
+    if (duplicateCount > 0) {
+      alert(`${uniqueProjects.length}개의 프로젝트가 저장되었습니다. (${duplicateCount}개 중복 제외)`);
+    } else {
+      alert(`${uniqueProjects.length}개의 프로젝트가 저장되었습니다!`);
+    }
     
     // 초기화
     setExtractedProjects([]);
     setSelectedProjects(new Set());
+    setDuplicateIndices(new Set());
+    setDuplicateInfo(new Map());
     onSave();
   };
 
@@ -187,9 +237,17 @@ const PDFUploadAdmin: React.FC<PDFUploadAdminProps> = ({ language, onSave }) => 
         {extractedProjects.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-                추출된 프로젝트 ({extractedProjects.length}개)
-              </h3>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                  추출된 프로젝트 ({extractedProjects.length}개)
+                </h3>
+                {duplicateIndices.size > 0 && (
+                  <p className="text-sm text-amber-600 dark:text-amber-400 mt-1 flex items-center gap-1">
+                    <AlertTriangle size={14} />
+                    {duplicateIndices.size}개의 중복 프로젝트가 발견되었습니다 (자동 선택 해제됨)
+                  </p>
+                )}
+              </div>
               <button
                 onClick={handleSaveSelected}
                 disabled={selectedProjects.size === 0}
@@ -203,15 +261,19 @@ const PDFUploadAdmin: React.FC<PDFUploadAdminProps> = ({ language, onSave }) => 
             <div className="space-y-3 max-h-96 overflow-y-auto">
               {extractedProjects.map((project, index) => {
                 const isSelected = selectedProjects.has(index);
+                const isDuplicate = duplicateIndices.has(index);
+                const existingProject = duplicateInfo.get(index);
                 return (
                   <div
                     key={index}
-                    className={`border rounded-lg p-4 cursor-pointer transition-all ${
-                      isSelected
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                        : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                    className={`border rounded-lg p-4 transition-all ${
+                      isDuplicate
+                        ? 'border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/10'
+                        : isSelected
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 cursor-pointer'
+                        : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 cursor-pointer'
                     }`}
-                    onClick={() => toggleProjectSelection(index)}
+                    onClick={() => !isDuplicate && toggleProjectSelection(index)}
                   >
                     <div className="flex items-start gap-3">
                       <div className={`mt-1 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
@@ -229,7 +291,18 @@ const PDFUploadAdmin: React.FC<PDFUploadAdminProps> = ({ language, onSave }) => 
                           <span className="font-bold text-slate-900 dark:text-white">
                             {project.company}
                           </span>
+                          {isDuplicate && (
+                            <span className="text-xs px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded flex items-center gap-1">
+                              <AlertTriangle size={12} />
+                              중복
+                            </span>
+                          )}
                         </div>
+                        {isDuplicate && existingProject && (
+                          <div className="mb-2 p-2 bg-slate-50 dark:bg-slate-800 rounded text-xs text-slate-600 dark:text-slate-400">
+                            <span className="font-medium">기존 프로젝트:</span> {existingProject.client} ({existingProject.period})
+                          </div>
+                        )}
                         <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">
                           {project.projectName}
                         </h4>
