@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Header from './components/Header';
@@ -8,8 +8,33 @@ import Skills from './components/Skills';
 import Lectures from './components/Lectures';
 import ChatWidget from './components/ChatWidget';
 import InteractiveBackground from './components/InteractiveBackground';
+import AdminPage from './components/admin/AdminPage';
 
 const App: React.FC = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    // URL 해시나 쿼리 파라미터로 Admin 페이지 접근 확인
+    const hash = window.location.hash;
+    const params = new URLSearchParams(window.location.search);
+    
+    if (hash === '#admin' || params.get('admin') === 'true') {
+      setIsAdmin(true);
+    }
+
+    // 해시 변경 감지
+    const handleHashChange = () => {
+      setIsAdmin(window.location.hash === '#admin' || params.get('admin') === 'true');
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  if (isAdmin) {
+    return <AdminPage />;
+  }
+
   return (
     <ThemeProvider>
       <LanguageProvider>

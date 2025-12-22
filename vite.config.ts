@@ -18,6 +18,19 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      build: {
+        rollupOptions: {
+          onwarn(warning, warn) {
+            // Zustand deprecation warning을 무시 (framer-motion 의존성)
+            if (warning.code === 'MODULE_LEVEL_DIRECTIVE' || 
+                warning.message?.includes('zustand') ||
+                warning.message?.includes('Default export is deprecated')) {
+              return;
+            }
+            warn(warning);
+          }
+        }
       }
     };
 });

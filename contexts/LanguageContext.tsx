@@ -1,6 +1,7 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useMemo } from 'react';
 import { PortfolioData, UILabels, Language } from '../types';
 import { RESUME_DATA_KO, RESUME_DATA_EN, RESUME_DATA_JA, UI_LABELS } from '../constants';
+import { loadPortfolioData, getDefaultData } from '../utils/adminStorage';
 
 interface LanguageContextType {
   language: Language;
@@ -14,10 +15,11 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('ko');
 
-  const data = 
-    language === 'en' ? RESUME_DATA_EN : 
-    language === 'ja' ? RESUME_DATA_JA : 
-    RESUME_DATA_KO;
+  const data = useMemo(() => {
+    // 저장된 데이터가 있으면 우선 사용, 없으면 기본값 사용
+    const saved = loadPortfolioData(language);
+    return saved || getDefaultData(language);
+  }, [language]);
 
   const labels = UI_LABELS[language];
 
